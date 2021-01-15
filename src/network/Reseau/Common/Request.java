@@ -1,6 +1,8 @@
 package Reseau.Common;
 
-public class Request extends Packet{
+import java.io.Serializable;
+
+public class Request extends Packet implements Serializable {
     private TypeRequest typeRequest;
 
     public Request(TypeRequest typeRequest) {

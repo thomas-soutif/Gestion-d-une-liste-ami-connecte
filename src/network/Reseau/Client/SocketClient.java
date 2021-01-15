@@ -23,7 +23,7 @@ public class SocketClient {
         threadClientR.start();
     }
 
-    public void SendPacket(Packet packet) {
+    public void sendPacket(Packet packet) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {

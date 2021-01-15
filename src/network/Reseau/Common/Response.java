@@ -1,6 +1,8 @@
 package Reseau.Common;
 
-public class Response extends Packet{
+import java.io.Serializable;
+
+public class Response extends Packet implements Serializable {
     private TypeResponse typeResponse;
     private int statusResponse;
 

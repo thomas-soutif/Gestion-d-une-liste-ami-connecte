@@ -26,8 +26,9 @@ public class ClientReceive implements Runnable{
                 if (packet != null) {
                     if (packet.getTypePacket() == Packet.TypePacket.REQUEST)
                         System.out.println("Paquet Request");//TODO traitementRequest (new thread) (cast en Request)
-                    else if (packet.getTypePacket() == Packet.TypePacket.RESPONSE)
+                    else if (packet.getTypePacket() == Packet.TypePacket.RESPONSE) {
                         System.out.println("Paquet Response");//TODO traitementResponse (new thread) (cast en Response)
+                    }
                 }
             }
             client.disconnectedServer();

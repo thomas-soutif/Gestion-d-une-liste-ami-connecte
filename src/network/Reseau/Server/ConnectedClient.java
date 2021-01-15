@@ -1,6 +1,8 @@
 package Reseau.Server;
 
 import Reseau.Common.Packet;
+import Reseau.Common.Response;
+import Reseau.Common.TypeResponse;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -19,7 +21,7 @@ public class ConnectedClient implements Runnable{
     private ObjectOutputStream out;
     private ObjectInputStream in;
 
-    //Todo private User user;
+    //TODO private User user;
 
     public ConnectedClient(Server server, Socket socket){
         this.server = server;
@@ -42,8 +44,10 @@ public class ConnectedClient implements Runnable{
             while (isActive){
                 Packet packet = (Packet) in.readObject();
                 if (packet!=null){
-                    if (packet.getTypePacket() == Packet.TypePacket.REQUEST)
+                    if (packet.getTypePacket() == Packet.TypePacket.REQUEST) {
                         System.out.println("Paquet Request");//TODO traitementRequest (new thread) (cast en Request)
+                        this.sendPacket(new Response(TypeResponse.TOKEN_AUTHENTIFICATION, 200));
+                    }
                     else if (packet.getTypePacket() == Packet.TypePacket.RESPONSE)
                         System.out.println("Paquet Response");//TODO traitementResponse (new thread) (cast en Response)
                 }

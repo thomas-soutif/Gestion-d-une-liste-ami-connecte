@@ -2,7 +2,9 @@ package Reseau.Common;
 
 import org.json.JSONObject;
 
-public abstract class Packet {
+import java.io.Serializable;
+
+public abstract class Packet implements Serializable {
     protected JSONObject content;
     protected TypePacket typePacket;
 

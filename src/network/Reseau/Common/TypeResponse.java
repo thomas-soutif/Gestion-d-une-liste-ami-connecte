@@ -2,5 +2,13 @@ package Reseau.Common;
 
 public enum TypeResponse {
     NONE,
-    REPONSE
-}
+    TOKEN_AUTHENTIFICATION,
+    INSCRIPTION,
+    FRIEND_REQUEST,
+    FRIENDLIST,
+    ACCEPT_FRIEND_REQUEST,
+    REFUSE_FRIEND_REQUEST,
+    REMOVE_FRIEND,
+    CONNECTED_FRIEND,
+    DISCONNECTION
+    }
