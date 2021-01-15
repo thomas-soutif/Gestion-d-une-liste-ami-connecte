@@ -1,4 +1,4 @@
 package database.CLASSES;
 
-public class Test {
+public class FriendRequest {
 }
