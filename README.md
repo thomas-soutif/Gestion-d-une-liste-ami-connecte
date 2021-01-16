@@ -31,8 +31,6 @@ class FriendRelationTestDAO {
 
         }catch(FriendRequestException e){
             System.out.println(e.getErrorType()); // Affiche le type de l'erreur, ici FRIEND_ALREADY_EXIST
-        }catch (SQLException e){
-            System.out.println("SQL error"); // Comme notre fonction insert hérite de SQLException on est obligé de la catché ici aussi
         }
         
 
