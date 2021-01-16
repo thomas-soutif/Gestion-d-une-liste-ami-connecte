@@ -1,5 +1,6 @@
 package database.DAO;
 import database.ConnexionPostGreSQL;
+import database.EXCEPTION.FriendRequestException;
 
 import java.sql.Connection;
 
@@ -19,7 +20,7 @@ public interface DAO<T> {
      *
      * @param obj
      */
-    T insert(T obj);
+    T insert(T obj) throws FriendRequestException;
 
     /**
      * Permet de mettre à jour les données d'un tuple dans la base à partir d'un

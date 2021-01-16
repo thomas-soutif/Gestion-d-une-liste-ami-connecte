@@ -1,6 +1,8 @@
 package database.DAO;
 
 import database.CLASSES.FriendRelation;
+import database.EXCEPTION.ErrorType;
+import database.EXCEPTION.FriendRequestException;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -25,7 +27,7 @@ public class FriendRelationDAO implements IFriendRelationDAO{
     }
 
     @Override
-    public FriendRelation insert(FriendRelation obj) {
+    public FriendRelation insert(FriendRelation obj) throws FriendRequestException {
         try{
             Statement database_instance = conn.createStatement();
             boolean is_friend_relation_exist = this.haveFriendRelation(); // TODO: Ajouter en paramètre deux objets User (user1 : User, user2 : User)
@@ -35,10 +37,10 @@ public class FriendRelationDAO implements IFriendRelationDAO{
         }catch (SQLException e){
 
             System.out.println("Erreur FriendRelationDAO, insert");
-            System.out.println(e.getMessage() + "\n");
+            System.out.println(e.getCause() + "\n");
         }
 
-        return null;
+        throw new FriendRequestException("Les utilisateurs spécifiés sont déja amis", ErrorType.FRIEND_RELATION_ALREADY_EXIST);
     }
 
     @Override
