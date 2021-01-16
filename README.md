@@ -33,8 +33,6 @@ class FriendRelationTestDAO {
             System.out.println(e.getErrorType()); // Affiche le type de l'erreur, ici FRIEND_ALREADY_EXIST
         }
         
-
-
     }
 }
 ```
