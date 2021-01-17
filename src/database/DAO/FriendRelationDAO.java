@@ -53,7 +53,7 @@ public class FriendRelationDAO implements IFriendRelationDAO{
          * */
         try{
             Statement database_instance = conn.createStatement();
-            boolean is_friend_relation_exist = this.haveFriendRelation(obj.getFirstUser(), obj.getSecondUser()); // TODO: Ajouter en paramètre deux objets User (user1 : User, user2 : User)
+            boolean is_friend_relation_exist = this.haveFriendRelation(obj.getFirstUser(), obj.getSecondUser());
             if(is_friend_relation_exist){
                 // Si jamais la relation existe déja, on ne peut pas insérer dans la base de données, donc il faut levé une exceptions
                 throw new FriendRequestException("Les utilisateurs spécifiés (" + obj.getFirstUser().getId() +

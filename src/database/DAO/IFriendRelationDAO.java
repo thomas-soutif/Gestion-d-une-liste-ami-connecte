@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface IFriendRelationDAO extends DAO<FriendRelation> {
 
-    List<FriendRelation> getAllFriendsOfUser(AccountUser user); // TODO: Modifier par la suite avec la vrai classe User
-    boolean haveFriendRelation(AccountUser firstUser, AccountUser secondUser); // TODO: Modifier par la suite avec la vrai classe User
+    List<FriendRelation> getAllFriendsOfUser(AccountUser user);
+    boolean haveFriendRelation(AccountUser firstUser, AccountUser secondUser);
 
 
 

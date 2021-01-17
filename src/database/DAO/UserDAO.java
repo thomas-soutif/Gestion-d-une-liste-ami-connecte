@@ -8,7 +8,7 @@ public class UserDAO implements IUserDAO {
 
 
     @Override
-    public List<AccountUser> getAccountUsersOfUser() {
+    public List<AccountUser> getAccountOfUsers() {
         return null;
     }
 
