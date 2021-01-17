@@ -6,6 +6,7 @@ import database.EXCEPTION.ErrorType;
 import database.EXCEPTION.FriendRequestException;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FriendRelationDAO implements IFriendRelationDAO{
@@ -13,7 +14,31 @@ public class FriendRelationDAO implements IFriendRelationDAO{
 
     @Override
     public List<FriendRelation> getAllFriendsOfUser(AccountUser user) {
-        return null;
+        List<FriendRelation> list= new ArrayList<>();
+
+        try{
+            Statement databasae_instance= conn.createStatement();
+            ResultSet result = databasae_instance.executeQuery("SELECT * FROM friend_relation WHERE first_user =" + user.getId() + " OR second_user =" + user.getId() + " ORDER BY id");
+
+            while(result.next()){
+                FriendRelation friendRelation = new FriendRelation();
+                AccountUser user1 = new AccountUser();
+                user1.setId(result.getInt("first_user"));
+                AccountUser user2 = new AccountUser();
+                user2.setId(result.getInt("second_user"));
+                friendRelation.setId(result.getInt("id"));
+                friendRelation.setFirstUser(user1);
+                friendRelation.setSecondUser(user2);
+                friendRelation.setDate(result.getDate("date"));
+
+                list.add(friendRelation);
+            }
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+
+
+        return list;
     }
 
     @Override
@@ -41,8 +66,47 @@ public class FriendRelationDAO implements IFriendRelationDAO{
     }
 
     @Override
+    public List<FriendRelation> getAllFriendRelation() {
+        List<FriendRelation> list= new ArrayList<>();
+
+        try{
+            Statement databasae_instance= conn.createStatement();
+            ResultSet result = databasae_instance.executeQuery("SELECT * FROM friend_relation ORDER BY id");
+
+            while(result.next()){
+                FriendRelation friendRelation = new FriendRelation();
+                AccountUser user1 = new AccountUser();
+                user1.setId(result.getInt("first_user"));
+                AccountUser user2 = new AccountUser();
+                user2.setId(result.getInt("second_user"));
+                friendRelation.setId(result.getInt("id"));
+                friendRelation.setFirstUser(user1);
+                friendRelation.setSecondUser(user2);
+                friendRelation.setDate(result.getDate("date"));
+
+                list.add(friendRelation);
+            }
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+        return list;
+    }
+
+    @Override
     public boolean delete(FriendRelation obj) {
-        return false;
+
+        boolean ok = false;
+        try{
+            Statement database_instance = conn.createStatement();
+            int nb = database_instance.executeUpdate("DELETE FROM friend_relation WHERE id= " + obj.getId());
+            if(nb >0){
+                ok = true;
+            }
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+
+        return ok;
     }
 
     @Override
@@ -86,6 +150,25 @@ public class FriendRelationDAO implements IFriendRelationDAO{
 
     @Override
     public boolean update(FriendRelation obj) {
-        return false;
+
+        boolean ok = false;
+        try{
+            PreparedStatement prepareStatement = conn.prepareStatement("UPDATE friend_relation SET first_user = ?, second_user = ?, date = ? WHERE id = ?");
+
+            prepareStatement.setInt(1, obj.getFirstUser().getId());
+            prepareStatement.setInt(2, obj.getSecondUser().getId());
+            prepareStatement.setDate(3,new java.sql.Date(System.currentTimeMillis()));
+            prepareStatement.setInt(4, obj.getId());
+
+            int nb = prepareStatement.executeUpdate();
+            if(nb > 0){
+                ok = true;
+            }
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+
+
+        return ok;
     }
 }

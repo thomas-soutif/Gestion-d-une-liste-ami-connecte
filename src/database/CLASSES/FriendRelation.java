@@ -34,6 +34,10 @@ public class FriendRelation {
         this.date = date;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
         return "FriendRelation{" +
