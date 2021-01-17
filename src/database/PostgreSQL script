@@ -1,0 +1,50 @@
+-- CREATE TABLE account_user
+CREATE TABLE account_user (
+    id             serial CONSTRAINT PRIMARY KEY,
+    name           varchar (100)NOT NULL,
+    firstname      varchar (100)NOT NULL,
+    pseudo         varchar (100),
+    password       varchar (100)
+);
+
+--CREATE TABLE friend_request
+
+create table friend_request
+(
+	from_user int,
+	to_user int,
+	id serial
+		constraint friend_request_pk
+			primary key,
+	date date
+);
+
+-- CREATE TABLE friend_relation
+create table friend_relation
+(
+	first_user int,
+	second_user int,
+	id serial
+		constraint friend_relation_pk
+			primary key,
+	date date
+);
+
+-- ALTER TABLES FOR FOREIGN KEYS
+
+alter table friend_request
+	add constraint friend_request_account_user_id_fk
+		foreign key (from_user) references account_user;
+
+
+alter table friend_request
+	add constraint friend_request_account_user_id_fk_2
+		foreign key (to_user) references account_user;
+
+alter table friend_relation
+	add constraint friend_relation_account_user_id_fk
+		foreign key (first_user) references account_user;
+
+alter table friend_relation
+	add constraint friend_relation_account_user_id_fk_2
+		foreign key (second_user) references account_user;

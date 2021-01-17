@@ -1,4 +1,4 @@
-package Reseau.Common;
+package network.Common;
 
 public enum TypeResponse {
     NONE,

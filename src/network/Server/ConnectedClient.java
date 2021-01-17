@@ -1,8 +1,8 @@
-package Reseau.Server;
+package network.Server;
 
-import Reseau.Common.Packet;
-import Reseau.Common.Response;
-import Reseau.Common.TypeResponse;
+import network.Common.Packet;
+import network.Common.Response;
+import network.Common.TypeResponse;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

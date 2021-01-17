@@ -1,4 +1,4 @@
-package Reseau.Common;
+package network.Common;
 
 import org.json.JSONObject;
 

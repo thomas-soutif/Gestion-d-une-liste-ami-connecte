@@ -1,6 +1,6 @@
-package Reseau.Client;
+package network.Client;
 
-import Reseau.Common.Packet;
+import network.Common.Packet;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
