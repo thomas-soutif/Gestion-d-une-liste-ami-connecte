@@ -1,6 +1,29 @@
 package database.DAO;
 
-public class UserDAO {
+import database.CLASSES.AccountUser;
+
+import java.util.List;
+
+public class UserDAO implements IUserDAO {
 
 
+    @Override
+    public List<AccountUser> getAccountUsersOfUser() {
+        return null;
+    }
+
+    @Override
+    public boolean delete(AccountUser obj) {
+        return false;
+    }
+
+    @Override
+    public AccountUser insert(AccountUser obj) {
+        return null;
+    }
+
+    @Override
+    public boolean update(AccountUser obj) {
+        return false;
+    }
 }
