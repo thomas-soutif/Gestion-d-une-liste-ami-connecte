@@ -5,16 +5,16 @@ import java.util.Date;
 public class FriendRelation {
 
     private Integer id;
-    private UserTemp firstUser;
-    private UserTemp secondUser;
+    private AccountUser firstUser;
+    private AccountUser secondUser;
     private Date date;
 
 
-    public UserTemp getFirstUser() {
+    public AccountUser getFirstUser() {
         return firstUser;
     }
 
-    public UserTemp getSecondUser() {
+    public AccountUser getSecondUser() {
         return secondUser;
     }
 
@@ -22,11 +22,11 @@ public class FriendRelation {
         this.id = id;
     }
 
-    public void setFirstUser(UserTemp firstUser) {
+    public void setFirstUser(AccountUser firstUser) {
         this.firstUser = firstUser;
     }
 
-    public void setSecondUser(UserTemp secondUser) {
+    public void setSecondUser(AccountUser secondUser) {
         this.secondUser = secondUser;
     }
 

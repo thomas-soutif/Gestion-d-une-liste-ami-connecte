@@ -1,11 +1,9 @@
 package database.SCRATCHES;
 
+import database.CLASSES.AccountUser;
 import database.CLASSES.FriendRelation;
-import database.CLASSES.UserTemp;
 import database.DAO.FriendRelationDAO;
 import database.EXCEPTION.FriendRequestException;
-
-import java.sql.SQLException;
 
 class FriendRelationTestDAO {
     public static void main(String[] args) {
@@ -15,8 +13,8 @@ class FriendRelationTestDAO {
         FriendRelationDAO dao = new FriendRelationDAO();
         try{
             // Ensuite on set des informations pour tester
-            UserTemp user1 = new UserTemp();
-            UserTemp user2 = new UserTemp();
+            AccountUser user1 = new AccountUser();
+            AccountUser user2 = new AccountUser();
             user1.setId(1);
             user2.setId(3);
             FriendRelation relation = new FriendRelation();

@@ -1,7 +1,7 @@
 package database.DAO;
 
+import database.CLASSES.AccountUser;
 import database.CLASSES.FriendRelation;
-import database.CLASSES.UserTemp;
 import database.EXCEPTION.ErrorType;
 import database.EXCEPTION.FriendRequestException;
 
@@ -12,12 +12,12 @@ public class FriendRelationDAO implements IFriendRelationDAO{
 
 
     @Override
-    public List<FriendRelation> getAllFriendsOfUser(UserTemp user) {
+    public List<FriendRelation> getAllFriendsOfUser(AccountUser user) {
         return null;
     }
 
     @Override
-    public boolean haveFriendRelation(UserTemp firstUser, UserTemp secondUser) {
+    public boolean haveFriendRelation(AccountUser firstUser, AccountUser secondUser) {
         boolean have_friend_relation = true;
         try{
             String query = "SELECT COUNT(*) FROM friend_relation WHERE first_user = ? AND second_user = ?";
