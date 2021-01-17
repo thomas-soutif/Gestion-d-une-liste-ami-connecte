@@ -14,6 +14,10 @@ public class FriendRelationDAO implements IFriendRelationDAO{
 
     @Override
     public List<FriendRelation> getAllFriendsOfUser(AccountUser user) {
+        /**
+         * Renvoie une liste contenant tout les tuples de la table où le user a son id dans un des champs (de first_user ou second_user)
+         * @return List<FriendRelation>
+         * */
         List<FriendRelation> list= new ArrayList<>();
 
         try{
@@ -43,6 +47,10 @@ public class FriendRelationDAO implements IFriendRelationDAO{
 
     @Override
     public boolean haveFriendRelation(AccountUser firstUser, AccountUser secondUser) {
+        /**
+         * Vérifie si deux utilisateurs sont déja amis et retourne true si c'est le cas, sinon false
+         * @return boolean
+         * */
         boolean have_friend_relation = true;
         try{
             String query = "SELECT COUNT(*) FROM friend_relation WHERE first_user = ? AND second_user = ?";
@@ -67,6 +75,10 @@ public class FriendRelationDAO implements IFriendRelationDAO{
 
     @Override
     public List<FriendRelation> getAllFriendRelation() {
+        /**
+         * Récupère toute les données de la table sous forme de liste
+         * @return List<FriendRelation>
+         * */
         List<FriendRelation> list= new ArrayList<>();
 
         try{
