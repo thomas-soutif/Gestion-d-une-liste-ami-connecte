@@ -2,7 +2,7 @@ package database.EXCEPTION;
 
 public class FriendRequestException extends Exception {
 
-    private  final ErrorType code;
+    private final ErrorType code;
     public FriendRequestException(ErrorType code){
         super();
         this.code = code;

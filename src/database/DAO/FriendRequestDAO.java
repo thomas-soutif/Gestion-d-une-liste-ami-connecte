@@ -5,7 +5,7 @@ import database.CLASSES.FriendRequest;
 
 import java.util.List;
 
-public class FriendRequestDAO implements IFriendRequestDAO {
+public class FriendRequestDAO implements IFriendRequestDAO{
 
 
     @Override
