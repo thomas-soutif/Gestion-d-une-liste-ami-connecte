@@ -15,7 +15,18 @@ public class FriendRequestDAO implements IFriendRequestDAO {
 
     @Override
     public boolean delete(FriendRequest obj) {
-        return false;
+        boolean ok = false;
+        try{
+            Statement database_instance = conn.createStatement();
+            int nb = database_instance.executeUpdate("DELETE FROM friend_request WHERE id= " + obj.getId());
+            if(nb >0){
+                ok = true;
+            }
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+
+        return ok;
     }
 
     @Override
