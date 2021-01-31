@@ -28,6 +28,6 @@ public interface DAO<T> {
      *
      * @param obj
      */
-    boolean update(T obj);
+    boolean update(T obj) throws CustomException;
 
 }

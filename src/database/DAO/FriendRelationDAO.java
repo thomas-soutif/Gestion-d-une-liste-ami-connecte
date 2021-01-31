@@ -176,9 +176,18 @@ public class FriendRelationDAO implements IFriendRelationDAO{
     }
 
     @Override
-    public boolean update(FriendRelation obj) {
+    public boolean update(FriendRelation obj) throws CustomException {
+
+        if(obj.getId() == null){
+            throw new CustomException("L'objet FriendRelation doit avoir un id set et existant pour pouvoir être mit à jour dans la bd", ErrorType.ID_IS_NULL);
+        }
 
         boolean ok = false;
+
+        if(haveFriendRelation(obj.getFirstUser(), obj.getSecondUser())){
+            throw new CustomException("Les utilisateurs spécifiés (" + obj.getFirstUser().getId() +
+                    " et " + obj.getSecondUser().getId()+ ") sont déja amis", ErrorType.FRIEND_RELATION_ALREADY_EXIST);
+        }
         try{
             PreparedStatement prepareStatement = conn.prepareStatement("UPDATE friend_relation SET first_user = ?, second_user = ?, date = ? WHERE id = ?");
 
