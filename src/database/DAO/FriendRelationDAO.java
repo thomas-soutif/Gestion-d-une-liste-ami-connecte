@@ -53,15 +53,30 @@ public class FriendRelationDAO implements IFriendRelationDAO{
          * */
         boolean have_friend_relation = true;
         try{
-            String query = "SELECT COUNT(*) FROM friend_relation WHERE first_user = ? AND second_user = ?";
-            PreparedStatement preparedStatement =conn.prepareStatement(query);
-            preparedStatement.setInt(1,firstUser.getId());
-            preparedStatement.setInt(2,secondUser.getId());
+            String query1 = "SELECT COUNT(*) FROM friend_relation WHERE first_user = ? AND second_user = ?";
+            String query2 = "SELECT COUNT(*) FROM friend_relation WHERE second_user = ? AND first_user = ?";
 
-            ResultSet result = preparedStatement.executeQuery();
+            PreparedStatement preparedStatement1 =conn.prepareStatement(query1);
+            preparedStatement1.setInt(1,firstUser.getId());
+            preparedStatement1.setInt(2,secondUser.getId());
+
+            PreparedStatement preparedStatement2 =conn.prepareStatement(query2);
+            preparedStatement2.setInt(1,firstUser.getId());
+            preparedStatement2.setInt(2,secondUser.getId());
+
+            ResultSet result = preparedStatement1.executeQuery();
             while(result.next()){
                 if(result.getInt("count") > 0){
-                    have_friend_relation= true;
+                    return true;
+                }else{
+                    have_friend_relation = false;
+                }
+            }
+
+            result = preparedStatement2.executeQuery();
+            while(result.next()){
+                if(result.getInt("count") > 0){
+                    have_friend_relation = true;
                 }else{
                     have_friend_relation = false;
                 }
