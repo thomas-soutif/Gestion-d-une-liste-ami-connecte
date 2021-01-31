@@ -120,6 +120,19 @@ public class FriendRelationDAO implements IFriendRelationDAO{
     }
 
     @Override
+    public FriendRelation getFriendRelationById(int id) {
+
+        List<FriendRelation> list = getAllFriendRelation();
+        
+        for(FriendRelation relation : list){
+            if(relation.getId() == id){
+                return relation;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public boolean delete(FriendRelation obj) {
 
         boolean ok = false;
