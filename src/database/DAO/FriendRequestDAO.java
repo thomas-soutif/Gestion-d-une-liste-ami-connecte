@@ -54,8 +54,35 @@ public class FriendRequestDAO implements IFriendRequestDAO {
     }
 
     @Override
-    public boolean update(FriendRequest obj) {
-        return false;
+    public boolean update(FriendRequest obj) throws CustomException {
+        if(obj.getId() == null){
+            throw new CustomException("L'objet FriendRequest doit avoir un id set et existant pour pouvoir être mit à jour dans la bd", ErrorType.ID_IS_NULL);
+        }
+
+        boolean ok = false;
+
+        if(isFriendRequestExist(obj.getFrom_user().getId(), obj.getTo_user().getId())){
+            throw new CustomException("Les utilisateurs spécifiés (" + obj.getFrom_user().getId() +
+                    " et " + obj.getTo_user().getId()+ ") ont déja une requete d'ami", ErrorType.FRIEND_REQUEST_ALREADY_EXIST);
+        }
+        try{
+            PreparedStatement prepareStatement = conn.prepareStatement("UPDATE friend_request SET from_user = ?, to_user = ?, date = ? WHERE id = ?");
+
+            prepareStatement.setInt(1, obj.getFrom_user().getId());
+            prepareStatement.setInt(2, obj.getTo_user().getId());
+            prepareStatement.setDate(3,new java.sql.Date(System.currentTimeMillis()));
+            prepareStatement.setInt(4, obj.getId());
+
+            int nb = prepareStatement.executeUpdate();
+            if(nb > 0){
+                ok = true;
+            }
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+
+
+        return ok;
     }
 
     @Override
