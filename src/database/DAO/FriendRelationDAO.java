@@ -3,7 +3,7 @@ package database.DAO;
 import database.CLASSES.AccountUser;
 import database.CLASSES.FriendRelation;
 import database.EXCEPTION.ErrorType;
-import database.EXCEPTION.FriendRequestException;
+import database.EXCEPTION.CustomException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -122,7 +122,7 @@ public class FriendRelationDAO implements IFriendRelationDAO{
     }
 
     @Override
-    public FriendRelation insert(FriendRelation obj) throws FriendRequestException {
+    public FriendRelation insert(FriendRelation obj) throws CustomException {
         /**
          * Insérer une relation dans la base de données. L'objet retourné contient dans son id la même que celle généré par la base de données lors de l'insertion.
          * @return FriendRelation
@@ -132,7 +132,7 @@ public class FriendRelationDAO implements IFriendRelationDAO{
             boolean is_friend_relation_exist = this.haveFriendRelation(obj.getFirstUser(), obj.getSecondUser());
             if(is_friend_relation_exist){
                 // Si jamais la relation existe déja, on ne peut pas insérer dans la base de données, donc il faut levé une exceptions
-                throw new FriendRequestException("Les utilisateurs spécifiés (" + obj.getFirstUser().getId() +
+                throw new CustomException("Les utilisateurs spécifiés (" + obj.getFirstUser().getId() +
                         " et " + obj.getSecondUser().getId()+ ") sont déja amis", ErrorType.FRIEND_RELATION_ALREADY_EXIST);
             }
 
