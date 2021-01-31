@@ -1,5 +1,7 @@
 package database.DAO;
 
+import database.CLASSES.AccountUser;
+import database.CLASSES.FriendRelation;
 import database.CLASSES.FriendRequest;
 import database.EXCEPTION.ErrorType;
 import database.EXCEPTION.CustomException;
@@ -8,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FriendRequestDAO implements IFriendRequestDAO {
@@ -98,7 +101,34 @@ public class FriendRequestDAO implements IFriendRequestDAO {
 
     @Override
     public List<FriendRequest> getFriendRequestsOfUser(int userId) {
-        return null;
+
+        List<FriendRequest> list = new ArrayList<>();
+        try {
+            Statement database_instance = conn.createStatement();
+            String query = "SELECT * FROM friend_request WHERE from_user =" + userId + " OR to_user =" + userId;
+            ResultSet result = database_instance.executeQuery(query);
+
+            while (result.next()){
+                FriendRequest friendRequest = new FriendRequest();
+                AccountUser from_user = new AccountUser();
+                from_user.setId(result.getInt("from_user"));
+                AccountUser to_user = new AccountUser();
+                to_user.setId(result.getInt("to_user"));
+                friendRequest.setTo_user(to_user);
+                friendRequest.setFrom_user(from_user);
+                friendRequest.setId(result.getInt("id"));
+                friendRequest.setDate(result.getDate("date"));
+
+                list.add(friendRequest);
+            }
+
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+
+
+        return list;
+
     }
 
 
