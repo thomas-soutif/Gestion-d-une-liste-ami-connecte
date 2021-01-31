@@ -66,6 +66,42 @@ public class FriendRequestDAO implements IFriendRequestDAO {
 
     @Override
     public boolean isFriendRequestExist(int user1Id, int user2Id) {
-        return false;
+        boolean have_request_relation = true;
+        try{
+            String query1 = "SELECT COUNT(*) FROM friend_request WHERE from_user = ? AND to_user = ?";
+            String query2 = "SELECT COUNT(*) FROM friend_request WHERE to_user = ? AND from_user  = ?";
+
+            PreparedStatement preparedStatement1 =conn.prepareStatement(query1);
+            preparedStatement1.setInt(1,user1Id);
+            preparedStatement1.setInt(2,user2Id);
+
+            PreparedStatement preparedStatement2 =conn.prepareStatement(query2);
+            preparedStatement2.setInt(1,user1Id);
+            preparedStatement2.setInt(2,user2Id);
+
+
+
+            ResultSet result = preparedStatement1.executeQuery();
+            while(result.next()){
+                if(result.getInt("count") > 0){
+                    return true;
+                }else{
+                    have_request_relation = false;
+                }
+            }
+            // On test la deuxième query
+            result = preparedStatement2.executeQuery();
+            while(result.next()){
+                if(result.getInt("count") > 0){
+                    have_request_relation = true;
+                }else{
+                    have_request_relation = false;
+                }
+            }
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+
+        return have_request_relation;
     }
 }
