@@ -15,6 +15,8 @@ import java.util.List;
 public class UserDAO implements IUserDAO {
 
 
+    private Object FriendRequestException;
+
     @Override
     public List<AccountUser> getAccountOfUsers() {
         List<AccountUser> list= new ArrayList<>();
@@ -29,6 +31,7 @@ public class UserDAO implements IUserDAO {
                 account_user.setId(result.getInt("id"));
                 account_user.setFirstName(result.getString("firstname"));
                 account_user.setName(result.getString("name"));
+                account_user.setPseudo(result.getString("pseudo"));
                 account_user.setPassword(result.getString("password"));
 
                 list.add(account_user);
@@ -58,25 +61,27 @@ public class UserDAO implements IUserDAO {
     }
 
     @Override
-    public AccountUser insert(AccountUser obj) { throws FriendRequestException {
+    public AccountUser insert(AccountUser obj) { throws FriendRequestException;
             /**
-             * Insérer une relation dans la base de données. L'objet retourné contient dans son id la même que celle généré par la base de données lors de l'insertion.
-             * @return FriendRelation
+             * Insérer un compte dans la base de données. L'objet retourné contient dans son id la même que celle généré par la base de données lors de l'insertion.
+             * @return AccountUser
              * */
             try{
                 Statement database_instance = conn.createStatement();
-                boolean is_account_user_exist = this.haveAccountUser(obj.getFirstUser(), obj.getSecondUser());
+                boolean is_account_user_exist = this.haveAccountUser(obj.getId(), obj.getName(), obj.getFirstName(), obj.getPseudo(), obj.getPassword());
                 if(is_account_user_exist){
-                    // Si jamais la relation existe déja, on ne peut pas insérer dans la base de données, donc il faut levé une exceptions
-                    throw new FriendRequestException("Les utilisateurs spécifiés (" + obj.getFirstUser().getId() +
-                            " et " + obj.getSecondUser().getId()+ ") sont déja amis", ErrorType.FRIEND_RELATION_ALREADY_EXIST);
+                    // Si jamais le compte existe déja, on ne peut pas le créer de nouveau dans la base de données, donc il faut lever une exception
+                    throw new AccountUserException("Les comptes utilisateurs spécifiés (" + obj.getName() +
+                            " et " + obj.getFirstName()+ ") sont déja créés", ErrorType.ACCOUNT_USER_ALREADY_EXIST);
                 }
 
                 String query = "INSERT into account_user (first_user, second_user,date) VALUES (?,?,?)";
                 PreparedStatement preparedStatement =conn.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
-                preparedStatement.setInt(1,obj.getFirstUser().getId());
-                preparedStatement.setInt(2,obj.getSecondUser().getId());
-                preparedStatement.setDate(3, new java.sql.Date(System.currentTimeMillis()));
+
+                preparedStatement.setString(1, obj.getName();
+                preparedStatement.setString(2,obj.getFirstName();
+                preparedStatement.setString(3, obj.getPseudo();
+                preparedStatement.setString(4, obj.getPassword();
 
                 if(preparedStatement.executeUpdate() > 0){
                     // Si l'insertion a été faite
@@ -105,10 +110,11 @@ public class UserDAO implements IUserDAO {
         try{
             PreparedStatement prepareStatement = conn.prepareStatement("UPDATE account_user SET first_user = ?, second_user = ?, date = ? WHERE id = ?");
 
-            prepareStatement.setInt(1, obj.getFirstUser().getId());
-            prepareStatement.setInt(2, obj.getSecondUser().getId());
-            prepareStatement.setDate(3,new java.sql.Date(System.currentTimeMillis()));
-            prepareStatement.setInt(4, obj.getId());
+            prepareStatement.setInt(1, obj.getId());
+            prepareStatement.setString(2, obj.getName();
+            prepareStatement.setString(3,obj.getFirstName();
+            prepareStatement.setString(4, obj.getPseudo();
+            prepareStatement.setString(5, obj.getPassword();
 
             int nb = prepareStatement.executeUpdate();
             if(nb > 0){
