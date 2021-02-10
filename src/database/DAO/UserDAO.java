@@ -19,7 +19,7 @@ public class UserDAO implements IUserDAO {
     private Object FriendRequestException;
 
     @Override
-    public List<AccountUser> getAccountOfUsers() {
+    public List<AccountUser> getAccountOfUsers(String name, String firstname, String pseudo, String password) {
         List<AccountUser> list= new ArrayList<>();
 
         try{
@@ -43,6 +43,11 @@ public class UserDAO implements IUserDAO {
 
 
         return list;
+    }
+
+    @Override
+    public boolean haveAccountUser(int user1Id, int user2Id) {
+        return false;
     }
 
     @Override
@@ -71,7 +76,7 @@ public class UserDAO implements IUserDAO {
 
             try{
                 Statement database_instance = conn.createStatement();
-                boolean is_account_user_exist = this.haveAccountUser(obj.getId());
+                boolean is_account_user_exist = this.haveAccountUser(obj.getId(), obj.getId());
                 if(is_account_user_exist){
                     // Si jamais le compte existe déja, on ne peut pas le créer de nouveau dans la base de données, donc il faut lever une exception
                     throw new CustomException("Les comptes utilisateurs spécifiés (" + obj.getId() + ") sont déja créés", ErrorType.ACCOUNT_USER_ALREADY_EXIST);
@@ -103,7 +108,7 @@ public class UserDAO implements IUserDAO {
     public boolean update(AccountUser obj) {
         boolean ok = false;
         try{
-            PreparedStatement prepareStatement = conn.prepareStatement("UPDATE account_user SET first_user = ?, second_user = ?, date = ? WHERE id = ?");
+            PreparedStatement prepareStatement = conn.prepareStatement("UPDATE account_user SET id = ?, name = ?, firstname = ?, pseudo = ?, password = ? WHERE id = ?");
 
             prepareStatement.setInt(1, obj.getId());
             prepareStatement.setString(2, obj.getName());
