@@ -61,14 +61,14 @@ public class UserDAO implements IUserDAO {
     }
 
     @Override
-    public AccountUser insert(AccountUser obj) { throws FriendRequestException;
+    public AccountUser insert(AccountUser obj) { throws FriendRequestException {
             /**
              * Insérer un compte dans la base de données. L'objet retourné contient dans son id la même que celle généré par la base de données lors de l'insertion.
              * @return AccountUser
              * */
             try{
                 Statement database_instance = conn.createStatement();
-                boolean is_account_user_exist = this.haveAccountUser(obj.getId(), obj.getName(), obj.getFirstName(), obj.getPseudo(), obj.getPassword());
+                boolean is_account_user_exist = this.haveAccountUser(obj.getId());
                 if(is_account_user_exist){
                     // Si jamais le compte existe déja, on ne peut pas le créer de nouveau dans la base de données, donc il faut lever une exception
                     throw new AccountUserException("Les comptes utilisateurs spécifiés (" + obj.getName() +
@@ -78,10 +78,7 @@ public class UserDAO implements IUserDAO {
                 String query = "INSERT into account_user (first_user, second_user,date) VALUES (?,?,?)";
                 PreparedStatement preparedStatement =conn.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
 
-                preparedStatement.setString(1, obj.getName();
-                preparedStatement.setString(2,obj.getFirstName();
-                preparedStatement.setString(3, obj.getPseudo();
-                preparedStatement.setString(4, obj.getPassword();
+                preparedStatement.setInt(1, obj.getId();
 
                 if(preparedStatement.executeUpdate() > 0){
                     // Si l'insertion a été faite
