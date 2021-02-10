@@ -1,11 +1,8 @@
 package database.DAO;
 
 import database.CLASSES.AccountUser;
-import database.CLASSES.FriendRelation;
 import database.EXCEPTION.CustomException;
 import database.EXCEPTION.ErrorType;
-
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -90,7 +87,7 @@ public class UserDAO implements IUserDAO {
                     // Si l'insertion a été faite
                     ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
                     if(generatedKeys.next()){
-                        // Alors on récupére l'id de ce nouveau tuple inséré et le stocke dans l'objet avant de le renvoyer
+                        // Alors on récupère l'id de ce nouveau tuple inséré et le stocke dans l'objet avant de le renvoyer
                         obj.setId(generatedKeys.getInt(1));
                     }
                 }
