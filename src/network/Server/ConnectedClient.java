@@ -1,8 +1,9 @@
 package network.Server;
 
+import database.CLASSES.AccountUser;
 import network.Common.Packet;
-import network.Common.Response;
-import network.Common.TypeResponse;
+import network.Common.Request;
+import network.Common.TypeRequest;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -12,7 +13,7 @@ import java.net.Socket;
 /**
  * Runnable qui va s'occuper d'un client
  */
-public class ConnectedClient implements Runnable{
+public class ConnectedClient implements Runnable {
 
     private static int idCounter = 1;
     private int id;
@@ -21,43 +22,58 @@ public class ConnectedClient implements Runnable{
     private ObjectOutputStream out;
     private ObjectInputStream in;
 
-    //TODO private User user;
+    private AccountUser user;
 
-    public ConnectedClient(Server server, Socket socket){
+    public ConnectedClient(Server server, Socket socket) {
         this.server = server;
         this.socket = socket;
         id = idCounter;
         idCounter++;
         try {
             out = new ObjectOutputStream(socket.getOutputStream());
-            System.out.println("Nouvelle connexion, id= " + id);
+            System.out.println("Nouvelle connexion, id = " + id);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    //region Props
+    public AccountUser getUser() {
+        return user;
+    }
+
+    public void setUser(AccountUser user) {
+        this.user = user;
+    }
+    //endregion
 
     @Override
     public void run() {
         try {
             in = new ObjectInputStream(socket.getInputStream());
             boolean isActive = true;
-            while (isActive){
+            while (isActive) {
                 Packet packet = (Packet) in.readObject();
-                if (packet!=null){
+                System.out.println("Reception d'un paquet du client d'id " + id);
+                if (packet != null) {
+                    packet.setSender(this);
                     if (packet.getTypePacket() == Packet.TypePacket.REQUEST) {
-                        System.out.println("Paquet Request");//TODO traitementRequest (new thread) (cast en Request)
-                        this.sendPacket(new Response(TypeResponse.TOKEN_AUTHENTIFICATION, 200));
-                    }
-                    else if (packet.getTypePacket() == Packet.TypePacket.RESPONSE)
-                        System.out.println("Paquet Response");//TODO traitementResponse (new thread) (cast en Response)
+                        System.out.println("Paquet Request");
+                        if (((Request)packet).getTypeRequest() == TypeRequest.DISCONNECTION)
+                            isActive = false;
+                        ((Request) packet).getTypeRequest().ServerHandling((Request) packet);
+                    } else if (packet.getTypePacket() == Packet.TypePacket.RESPONSE)
+                        System.out.println("Paquet Response");
+
                 }
             }
+            System.out.println("Deconnexion du client d'id "+ id);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public void sendPacket(Packet packet){
+    public void sendPacket(Packet packet) {
         try {
             out.writeObject(packet);
             out.flush();

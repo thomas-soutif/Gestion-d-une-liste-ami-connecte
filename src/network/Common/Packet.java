@@ -1,18 +1,19 @@
 package network.Common;
 
-import org.json.JSONObject;
+import network.Server.ConnectedClient;
 
 import java.io.Serializable;
 
 public abstract class Packet implements Serializable {
-    protected JSONObject content;
+    protected String content;
     protected TypePacket typePacket;
+    protected ConnectedClient sender;
 
-    public void setContent(JSONObject content){
+    public void setContent(String content){
         this.content = content;
     }
 
-    public JSONObject getContent() {
+    public String getContent() {
         return content;
     }
 
@@ -20,9 +21,18 @@ public abstract class Packet implements Serializable {
         return typePacket;
     }
 
+    public ConnectedClient getSender() {
+        return sender;
+    }
+
+    public void setSender(ConnectedClient sender) {
+        this.sender = sender;
+    }
+
     public enum TypePacket{
         REQUEST,
         RESPONSE
     }
+
 }
 
