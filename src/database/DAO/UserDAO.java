@@ -71,8 +71,7 @@ public class UserDAO implements IUserDAO {
                 boolean is_account_user_exist = this.haveAccountUser(obj.getId());
                 if(is_account_user_exist){
                     // Si jamais le compte existe déja, on ne peut pas le créer de nouveau dans la base de données, donc il faut lever une exception
-                    throw new AccountUserException("Les comptes utilisateurs spécifiés (" + obj.getName() +
-                            " et " + obj.getFirstName()+ ") sont déja créés", ErrorType.ACCOUNT_USER_ALREADY_EXIST);
+                    throw new AccountUserException("Les comptes utilisateurs spécifiés (" + obj.getId() + ") sont déja créés", ErrorType.ACCOUNT_USER_ALREADY_EXIST);
                 }
 
                 String query = "INSERT into account_user (first_user, second_user,date) VALUES (?,?,?)";
