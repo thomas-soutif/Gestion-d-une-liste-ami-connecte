@@ -13,9 +13,9 @@ Dans le package database.EXCEPTIONS se trouve les classes personnalisés qui hé
 ```
 // Le fihier où l'on va lever l'exception personnalisée
 
-public FriendRelation insert(FriendRelation obj) throws SQLException, FriendRequestException {
+public FriendRelation insert(FriendRelation obj) throws SQLException, CustomException {
         
-        throw new FriendRequestException("Les utilisateurs spécifiés sont déja amis", ErrorType.FRIEND_RELATION_ALREADY_EXIST);
+        throw new CustomException("Les utilisateurs spécifiés sont déja amis", ErrorType.FRIEND_RELATION_ALREADY_EXIST);
     }
 ```
 
@@ -29,7 +29,7 @@ class FriendRelationTestDAO {
         try{
             dao.insert(new FriendRelation());
 
-        }catch(FriendRequestException e){
+        }catch(CustomException e){
             System.out.println(e.getErrorType()); // Affiche le type de l'erreur, ici FRIEND_ALREADY_EXIST
         }
         
