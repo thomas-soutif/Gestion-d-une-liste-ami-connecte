@@ -2,8 +2,9 @@ package database.DAO;
 
 import database.CLASSES.AccountUser;
 import database.CLASSES.FriendRelation;
+import database.EXCEPTION.CustomException;
 import database.EXCEPTION.ErrorType;
-import database.EXCEPTION.FriendRequestException;
+
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -60,24 +61,25 @@ public class UserDAO implements IUserDAO {
         return ok;
     }
 
+    /**
+     * Insérer un compte dans la base de données. L'objet retourné contient dans son id la même que celle généré par la base de données lors de l'insertion.
+     * @return AccountUser
+     *
+     * */
     @Override
-    public AccountUser insert(AccountUser obj) { throws FriendRequestException {
-            /**
-             * Insérer un compte dans la base de données. L'objet retourné contient dans son id la même que celle généré par la base de données lors de l'insertion.
-             * @return AccountUser
-             * */
+    public AccountUser insert(AccountUser obj)  throws CustomException {
+
             try{
                 Statement database_instance = conn.createStatement();
                 boolean is_account_user_exist = this.haveAccountUser(obj.getId());
                 if(is_account_user_exist){
                     // Si jamais le compte existe déja, on ne peut pas le créer de nouveau dans la base de données, donc il faut lever une exception
-                    throw new AccountUserException("Les comptes utilisateurs spécifiés (" + obj.getId() + ") sont déja créés", ErrorType.ACCOUNT_USER_ALREADY_EXIST);
+                    throw new CustomException("Les comptes utilisateurs spécifiés (" + obj.getId() + ") sont déja créés", ErrorType.ACCOUNT_USER_ALREADY_EXIST);
                 }
 
                 String query = "INSERT into account_user (first_user, second_user,date) VALUES (?,?,?)";
                 PreparedStatement preparedStatement =conn.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
-
-                preparedStatement.setInt(1, obj.getId();
+                preparedStatement.setInt(1, obj.getId());
 
                 if(preparedStatement.executeUpdate() > 0){
                     // Si l'insertion a été faite
@@ -97,9 +99,6 @@ public class UserDAO implements IUserDAO {
             return obj;
         }
 
-        return null;
-    }
-
     @Override
     public boolean update(AccountUser obj) {
         boolean ok = false;
@@ -107,10 +106,10 @@ public class UserDAO implements IUserDAO {
             PreparedStatement prepareStatement = conn.prepareStatement("UPDATE account_user SET first_user = ?, second_user = ?, date = ? WHERE id = ?");
 
             prepareStatement.setInt(1, obj.getId());
-            prepareStatement.setString(2, obj.getName();
-            prepareStatement.setString(3,obj.getFirstName();
-            prepareStatement.setString(4, obj.getPseudo();
-            prepareStatement.setString(5, obj.getPassword();
+            prepareStatement.setString(2, obj.getName());
+            prepareStatement.setString(3,obj.getFirstName());
+            prepareStatement.setString(4, obj.getPseudo());
+            prepareStatement.setString(5, obj.getPassword());
 
             int nb = prepareStatement.executeUpdate();
             if(nb > 0){
