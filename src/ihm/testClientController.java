@@ -1,4 +1,4 @@
-package Ihm;
+package ihm;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

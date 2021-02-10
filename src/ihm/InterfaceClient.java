@@ -1,4 +1,4 @@
-package Ihm;
+package ihm;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -34,6 +34,7 @@ public class InterfaceClient extends Application {
                 System.out.println("Connecté au serveur");
                 System.out.println("Test2");
                 Parent root = FXMLLoader.load(getClass().getResource("TestClient.fxml"));
+                System.out.println("test 3");
                 Scene scene = new Scene(root);
                 primaryStage.getIcons().add(new Image("https://image.noelshack.com/fichiers/2015/19/1431246599-hap512.png"));
                 primaryStage.setTitle("Interface Test");
