@@ -1,23 +1,23 @@
 package database.EXCEPTION;
 
-public class FriendRequestException extends Exception {
+public class CustomException extends Exception {
 
-    private final ErrorType code;
-    public FriendRequestException(ErrorType code){
+    private  final ErrorType code;
+    public CustomException(ErrorType code){
         super();
         this.code = code;
     }
 
-    public FriendRequestException(String message, Throwable cause, ErrorType code){
+    public CustomException(String message, Throwable cause, ErrorType code){
         super(message,cause);
         this.code = code;
     }
-    public FriendRequestException(String message, ErrorType code){
+    public CustomException(String message, ErrorType code){
         super(message);
         this.code = code;
     }
 
-    public FriendRequestException(Throwable cause, ErrorType code){
+    public CustomException(Throwable cause, ErrorType code){
         super(cause);
         this.code = code;
     }

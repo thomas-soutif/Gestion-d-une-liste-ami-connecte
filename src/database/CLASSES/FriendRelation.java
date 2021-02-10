@@ -38,6 +38,10 @@ public class FriendRelation {
         return id;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
     @Override
     public String toString() {
         return "FriendRelation{" +
