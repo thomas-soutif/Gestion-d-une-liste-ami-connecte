@@ -21,7 +21,7 @@
             <VBox prefHeight="263.0" prefWidth="600.0">
                <children>
                   <Label prefHeight="17.0" prefWidth="599.0" text="Friend List" />
-                  <ListView prefHeight="245.0" prefWidth="600.0" />
+                  <ListView fx:id="friendList" prefHeight="245.0" prefWidth="600.0" />
                </children>
             </VBox>
          </children></VBox>

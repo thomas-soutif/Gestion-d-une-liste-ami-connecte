@@ -20,7 +20,7 @@ public class MainWindowController {
 
 
     public ListView listViewFriendRequest;
-
+    public ListView friendList;
 
 
     @FXML
@@ -30,6 +30,7 @@ public class MainWindowController {
         Button button_accept = new Button("Accept");
         AccountUser user = new AccountUser();
         user.setId(45);
+        user.setFirstName("Kevin");
         button_accept.getProperties().put("idFriendRequest",user);
         Button button_refuse = new Button("Refuse");
         Label label_name = new Label("Kevin");
@@ -43,6 +44,11 @@ public class MainWindowController {
             System.out.println(button.getProperties());
             AccountUser user2 = (AccountUser) button.getProperties().get("idFriendRequest");
             System.out.println(user2.getId());
+
+            HBox hBox = new HBox();
+            Label label_name2= new Label(user2.getFirstName());
+            hBox.getChildren().add(label_name2);
+            this.friendList.getItems().add(hBox);
         });
 
     }
