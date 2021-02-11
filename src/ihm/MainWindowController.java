@@ -3,10 +3,18 @@ package ihm;
 import database.CLASSES.AccountUser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class MainWindowController {
 
@@ -36,6 +44,19 @@ public class MainWindowController {
             AccountUser user2 = (AccountUser) button.getProperties().get("idFriendRequest");
             System.out.println(user2.getId());
         });
+
+    }
+
+    public void addAFriend(ActionEvent actionEvent) throws IOException {
+
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("AddAFriendModal.fxml"));
+        stage.setScene(new Scene(root));
+        stage.setTitle("Add a friend");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(
+                ((Node)actionEvent.getSource()).getScene().getWindow());
+        stage.show();
 
     }
 }

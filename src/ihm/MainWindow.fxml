@@ -9,7 +9,7 @@
          <children>
             <HBox prefHeight="61.0" prefWidth="600.0">
                <children>
-                  <Button mnemonicParsing="false" text="Add a friend" />
+                  <Button fx:id="addAFriendButton" mnemonicParsing="false" onAction="#addAFriend" text="Add a friend" />
                </children>
             </HBox>
             <VBox prefHeight="139.0" prefWidth="600.0">
