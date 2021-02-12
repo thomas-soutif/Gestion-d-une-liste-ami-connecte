@@ -39,7 +39,8 @@ public enum TypeRequest {
         @Override
         public void ServerHandling(Request request) {
             System.out.println("INSCRIPTION str");
-
+            Response response = new Response(TypeResponse.TOKEN_AUTHENTICATION, 200);
+            request.getSender().sendPacket(response);
 
         }
     },

@@ -1,4 +1,4 @@
-package Ihm;
+package ihm;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -16,7 +16,7 @@ import java.util.Properties;
 
 public class InterfaceClient extends Application {
     private boolean isConnected;
-
+    private static Stage mainStage;
     public static void main(String[] args) {
         launch(args);
     }
@@ -33,12 +33,14 @@ public class InterfaceClient extends Application {
             try {
                 System.out.println("Connecté au serveur");
                 System.out.println("Test2");
-                Parent root = FXMLLoader.load(getClass().getResource("TestClient.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("InitWindow.fxml"));
+                System.out.println("test 3");
                 Scene scene = new Scene(root);
                 primaryStage.getIcons().add(new Image("https://image.noelshack.com/fichiers/2015/19/1431246599-hap512.png"));
                 primaryStage.setTitle("Interface Test");
                 primaryStage.setScene(scene);
                 primaryStage.show();
+                mainStage = primaryStage;
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -76,6 +78,9 @@ public class InterfaceClient extends Application {
         return connected;
     }
 
+    public static Stage getMainStage(){
+        return mainStage;
+    }
 
 
 }
