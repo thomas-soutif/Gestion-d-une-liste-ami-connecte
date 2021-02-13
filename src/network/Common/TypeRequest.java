@@ -55,7 +55,6 @@ public enum TypeRequest {
 
     public void ClientHandling(Request request) {
         System.out.println("default");
-//        MainWindowController.getInstance().testLinkUI();
     }
 
     public void ServerHandling(Request request) {
