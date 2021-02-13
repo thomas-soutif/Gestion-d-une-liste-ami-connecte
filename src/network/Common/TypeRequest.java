@@ -1,6 +1,7 @@
 package network.Common;
 
 import database.CLASSES.AccountUser;
+import ihm.MainWindowController;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -54,6 +55,7 @@ public enum TypeRequest {
 
     public void ClientHandling(Request request) {
         System.out.println("default");
+//        MainWindowController.getInstance().testLinkUI();
     }
 
     public void ServerHandling(Request request) {

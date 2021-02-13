@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 
 /**
  * Runnable qui va s'occuper d'un client
@@ -53,19 +54,31 @@ public class ConnectedClient implements Runnable {
             in = new ObjectInputStream(socket.getInputStream());
             boolean isActive = true;
             while (isActive) {
-                Packet packet = (Packet) in.readObject();
-                System.out.println("Reception d'un paquet du client d'id " + id);
-                if (packet != null) {
-                    packet.setSender(this);
-                    if (packet.getTypePacket() == Packet.TypePacket.REQUEST) {
-                        System.out.println("Paquet Request");
-                        if (((Request)packet).getTypeRequest() == TypeRequest.DISCONNECTION)
-                            isActive = false;
-                        ((Request) packet).getTypeRequest().ServerHandling((Request) packet);
-                    } else if (packet.getTypePacket() == Packet.TypePacket.RESPONSE)
-                        System.out.println("Paquet Response");
+                try{
+                    Packet packet = (Packet) in.readObject();
+                    System.out.println("Reception d'un paquet du client d'id " + id);
+                    if (packet != null) {
+                        packet.setSender(this);
+                        if (packet.getTypePacket() == Packet.TypePacket.REQUEST) {
+                            System.out.println("Paquet Request");
+                            if (((Request)packet).getTypeRequest() == TypeRequest.DISCONNECTION)
+                                isActive = false;
+                            ((Request) packet).getTypeRequest().ServerHandling((Request) packet);
+                        } else if (packet.getTypePacket() == Packet.TypePacket.RESPONSE)
+                            System.out.println("Paquet Response");
 
+                    }
+                }catch (SocketException e){
+                    System.out.println(e);
+                    if(e.getMessage().equals("Connection reset")){
+
+                        isActive = false;
+                    }else{
+                        System.exit(1);
+                    }
                 }
+
+
             }
             System.out.println("Deconnexion du client d'id "+ id);
         } catch (IOException | ClassNotFoundException e) {

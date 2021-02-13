@@ -1,6 +1,7 @@
 package ihm;
 
 import database.CLASSES.AccountUser;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -76,7 +77,7 @@ public class MainWindowController {
     }
 
     public void testLinkUI(){
-        //Platform.runLater(() -> addAFriendButton.setText("Lien UI"));
+        Platform.runLater(() -> addAFriendButton.setText("Lien UI"));
     }
 
     public static MainWindowController getInstance() {
