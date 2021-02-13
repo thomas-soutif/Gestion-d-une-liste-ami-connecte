@@ -13,18 +13,26 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import network.Client.SocketClient;
+import network.Common.Request;
+import network.Common.TypeRequest;
 
 import java.io.IOException;
 
 public class MainWindowController {
 
-
-    public ListView listViewFriendRequest;
-    public ListView friendList;
+    private static MainWindowController instance;
+    @FXML
+    private ListView listViewFriendRequest;
+    @FXML
+    private ListView friendList;
+    @FXML
+    private Button addAFriendButton;
 
 
     @FXML
     public void initialize() {
+        instance = this;
         HBox hbox = new HBox();
 
         Button button_accept = new Button("Accept");
@@ -49,6 +57,7 @@ public class MainWindowController {
             Label label_name2= new Label(user2.getFirstName());
             hBox.getChildren().add(label_name2);
             this.friendList.getItems().add(hBox);
+            SocketClient.sendPacketAsyncStatic(new Request(TypeRequest.INSCRIPTION));
         });
 
     }
@@ -64,5 +73,13 @@ public class MainWindowController {
                 ((Node)actionEvent.getSource()).getScene().getWindow());
         stage.show();
 
+    }
+
+    public void testLinkUI(){
+        //Platform.runLater(() -> addAFriendButton.setText("Lien UI"));
+    }
+
+    public static MainWindowController getInstance() {
+        return instance;
     }
 }

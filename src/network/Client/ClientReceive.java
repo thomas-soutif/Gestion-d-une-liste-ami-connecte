@@ -1,6 +1,7 @@
 package network.Client;
 
 import network.Common.Packet;
+import network.Common.Request;
 import network.Common.Response;
 
 import java.io.ObjectInputStream;
@@ -20,17 +21,14 @@ public class ClientReceive implements Runnable {
     public void run() {
         try {
             in = new ObjectInputStream(socket.getInputStream());
-
             boolean isActive = true;
             while (isActive) {
                 Packet packet = (Packet) in.readObject();
                 if (packet != null) {
                     if (packet.getTypePacket() == Packet.TypePacket.REQUEST)
-                        System.out.println("Paquet Request");//TODO traitementRequest (new thread) (cast en Request)
-                    else if (packet.getTypePacket() == Packet.TypePacket.RESPONSE) {
-                        System.out.println("Paquet Response");//TODO traitementResponse (new thread) (cast en Response)
+                        ((Request) packet).getTypeRequest().ClientHandling((Request) packet);
+                    else if (packet.getTypePacket() == Packet.TypePacket.RESPONSE)
                         ((Response) packet).getTypeResponse().ClientHandling((Response) packet);
-                    }
                 }
             }
             client.disconnectedServer();
