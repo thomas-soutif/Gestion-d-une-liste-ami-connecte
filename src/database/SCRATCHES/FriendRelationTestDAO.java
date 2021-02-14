@@ -1,9 +1,7 @@
 import database.CLASSES.AccountUser;
 import database.CLASSES.FriendRelation;
 import database.DAO.FriendRelationDAO;
-import database.EXCEPTION.FriendRequestException;
 
-import java.sql.SQLException;
 import java.util.List;
 
 class FriendRelationTestDAO {
