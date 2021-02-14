@@ -17,8 +17,12 @@ import javafx.stage.Stage;
 import network.Client.SocketClient;
 import network.Common.Request;
 import network.Common.TypeRequest;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainWindowController {
 
@@ -33,7 +37,56 @@ public class MainWindowController {
 
     @FXML
     public void initialize() {
+        System.out.println("aaa");
         instance = this;
+        System.out.println("ayui");
+        JSONObject jsonObject = new JSONObject();
+        System.out.println("Demande de la liste d'ami");
+        Request request = new Request(TypeRequest.FRIENDLIST, jsonObject);
+        SocketClient.sendPacketAsyncStatic(request);
+
+    }
+
+    public void addAFriend(ActionEvent actionEvent) throws IOException {
+
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("AddAFriendModal.fxml"));
+        stage.setScene(new Scene(root));
+        stage.setTitle("Add a friend");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(
+                ((Node)actionEvent.getSource()).getScene().getWindow());
+        stage.show();
+
+    }
+
+    public void testLinkUI(){
+        Platform.runLater(() -> addAFriendButton.setText("Lien UI"));
+    }
+
+
+    public void setFriendListOnUI(JSONObject object){
+        Platform.runLater(() -> {
+            JSONArray list_user = object.getJSONArray("list");
+            for( Object user_object : list_user){
+                JSONObject user = (JSONObject) user_object;
+                HBox hBox = new HBox();
+                Label label_name= new Label(user.getString("firstName") + " " + user.getString("name"));
+                label_name.getProperties().put("user_id",user.getInt("id"));
+                hBox.getChildren().add(label_name);
+                this.friendList.getItems().add(hBox);
+                System.out.println(user);
+
+            }
+
+
+
+
+        });
+
+    }
+
+    public void nothing_for_the_moment(){
         HBox hbox = new HBox();
 
         Button button_accept = new Button("Accept");
@@ -61,23 +114,6 @@ public class MainWindowController {
             SocketClient.sendPacketAsyncStatic(new Request(TypeRequest.INSCRIPTION));
         });
 
-    }
-
-    public void addAFriend(ActionEvent actionEvent) throws IOException {
-
-        Stage stage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("AddAFriendModal.fxml"));
-        stage.setScene(new Scene(root));
-        stage.setTitle("Add a friend");
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(
-                ((Node)actionEvent.getSource()).getScene().getWindow());
-        stage.show();
-
-    }
-
-    public void testLinkUI(){
-        Platform.runLater(() -> addAFriendButton.setText("Lien UI"));
     }
 
     public static MainWindowController getInstance() {

@@ -32,13 +32,14 @@ public class InitWindowController {
         System.out.println("Bouton Michel");
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("pseudo","Michel");
-            jsonObject.put("password","1234");
+            jsonObject.put("pseudo","Xelèèèèèèèèèreeee");
+            jsonObject.put("password","jemappelleThomas");
         } catch (JSONException e) {
             e.printStackTrace();
         }
         Request request = new Request(TypeRequest.TOKEN_AUTHENTICATION, jsonObject);
         SocketClient.sendPacketAsyncStatic(request);
+        System.out.println("bbbb");
         Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
         InterfaceClient.getMainStage().setScene(new Scene(root));
     }

@@ -1,9 +1,15 @@
 package network.Common;
 
 import database.CLASSES.AccountUser;
+import database.CLASSES.FriendRelation;
+import database.DAO.FriendRelationDAO;
 import ihm.MainWindowController;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.awt.desktop.SystemSleepEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public enum TypeRequest {
     NONE,
@@ -19,10 +25,11 @@ public enum TypeRequest {
                 //if exist TODO liens base donnée et traitement erreur
                 JSONObject jsonObjectResponse = new JSONObject();
                 AccountUser user = new AccountUser();
-                user.setPseudo("Michel");
-                user.setPassword("1234");
-                user.setFirstName("Michou");
-                user.setName("Delavegas");
+                user.setPseudo("Xelèèèèèèèèèreeee");
+                user.setPassword("jemappelleThomas");
+                user.setFirstName("Thomas");
+                user.setName("Soutif");
+                user.setId(6);
                 jsonObjectResponse.put("user", new JSONObject(user));
                 System.out.println(jsonObjectResponse);
                 request.getSender().setUser(user);
@@ -46,7 +53,45 @@ public enum TypeRequest {
         }
     },
     FRIEND_REQUEST,
-    FRIENDLIST,
+    FRIENDLIST{
+
+        @Override
+        public void ServerHandling(Request request){
+            System.out.println("Get Friend List request");
+            AccountUser user = request.getSender().getUser();
+            if(user == null){
+                Response response = new Response(TypeResponse.FRIENDLIST,401);
+                request.getSender().sendPacket(response);
+            }else{
+
+                FriendRelationDAO dao = new FriendRelationDAO();
+
+                List<FriendRelation> list_friend_relation = dao.getAllFriendsOfUser(user);
+                List<AccountUser> list_user = new ArrayList<>();
+
+                for(FriendRelation friend_relation : list_friend_relation){
+                    if(friend_relation.getFirstUser().getId() != user.getId() ){
+                        list_user.add(friend_relation.getFirstUser());
+                    }else if(friend_relation.getSecondUser().getId() != user.getId()){
+                        list_user.add(friend_relation.getSecondUser());
+                    }
+                }
+
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("list",list_user);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Envoie de la liste d'ami");
+                Response response = new Response(TypeResponse.FRIENDLIST,200, jsonObject);
+                request.getSender().sendPacket(response);
+
+            }
+
+        }
+
+    },
     ACCEPT_FRIEND_REQUEST,
     REFUSE_FRIEND_REQUEST,
     REMOVE_FRIEND,

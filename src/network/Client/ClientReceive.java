@@ -27,8 +27,11 @@ public class ClientReceive implements Runnable {
                 if (packet != null) {
                     if (packet.getTypePacket() == Packet.TypePacket.REQUEST)
                         ((Request) packet).getTypeRequest().ClientHandling((Request) packet);
-                    else if (packet.getTypePacket() == Packet.TypePacket.RESPONSE)
+                    else if (packet.getTypePacket() == Packet.TypePacket.RESPONSE){
+                        System.out.println("Client receive packet type response");
                         ((Response) packet).getTypeResponse().ClientHandling((Response) packet);
+                    }
+
                 }
             }
             client.disconnectedServer();

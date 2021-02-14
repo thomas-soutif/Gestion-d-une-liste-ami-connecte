@@ -70,6 +70,31 @@ public class UserDAO implements IUserDAO {
     }
 
     @Override
+    public AccountUser getAccountOfUser(int id) {
+        try{
+            Statement database_instance= conn.createStatement();
+            ResultSet result = database_instance.executeQuery("SELECT * FROM account_user WHERE id= " + id);
+
+            while(result.next()){
+                AccountUser account_user = new AccountUser();
+
+                account_user.setId(result.getInt("id"));
+                account_user.setFirstName(result.getString("firstname"));
+                account_user.setName(result.getString("name"));
+                account_user.setPseudo(result.getString("pseudo"));
+                account_user.setPassword(result.getString("password"));
+
+                return account_user;
+            }
+
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
+    @Override
     public boolean delete(AccountUser obj) {
         boolean ok = false;
         try{

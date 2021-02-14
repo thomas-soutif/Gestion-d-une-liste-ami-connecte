@@ -23,13 +23,11 @@ public class FriendRelationDAO implements IFriendRelationDAO{
         try{
             Statement databasae_instance= conn.createStatement();
             ResultSet result = databasae_instance.executeQuery("SELECT * FROM friend_relation WHERE first_user =" + user.getId() + " OR second_user =" + user.getId() + " ORDER BY id");
-
+            UserDAO user_dao = new UserDAO();
             while(result.next()){
                 FriendRelation friendRelation = new FriendRelation();
-                AccountUser user1 = new AccountUser();
-                user1.setId(result.getInt("first_user"));
-                AccountUser user2 = new AccountUser();
-                user2.setId(result.getInt("second_user"));
+                AccountUser user1 = user_dao.getAccountOfUser(result.getInt("first_user"));
+                AccountUser user2 = user_dao.getAccountOfUser(result.getInt("second_user"));
                 friendRelation.setId(result.getInt("id"));
                 friendRelation.setFirstUser(user1);
                 friendRelation.setSecondUser(user2);

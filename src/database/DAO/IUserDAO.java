@@ -10,4 +10,5 @@ public interface IUserDAO extends DAO<AccountUser>{
     List<AccountUser> getAccountOfUsers();
 
     boolean haveAccountUser(int user1Id);
+    AccountUser getAccountOfUser(int id);
 }
