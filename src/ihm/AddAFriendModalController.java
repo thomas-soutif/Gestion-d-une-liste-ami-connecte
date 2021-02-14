@@ -10,9 +10,6 @@ import javafx.scene.layout.HBox;
 public class AddAFriendModalController {
     public ListView ListExistingUser;
 
-
-
-
     @FXML
     public void initialize() {
         HBox hbox = new HBox();
@@ -27,4 +24,4 @@ public class AddAFriendModalController {
         this.ListExistingUser.getItems().add(hbox);
 
     }
-    }
+}

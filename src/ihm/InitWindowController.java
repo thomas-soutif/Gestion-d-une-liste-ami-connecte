@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import network.Client.Handler.HandlerAuthClient;
 import network.Client.SocketClient;
 import network.Common.Request;
 import network.Common.TypeRequest;
@@ -30,15 +31,7 @@ public class InitWindowController {
     @FXML
     private void connexionMichel(ActionEvent event) throws IOException {
         System.out.println("Bouton Michel");
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("pseudo","Michel");
-            jsonObject.put("password","1234");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Request request = new Request(TypeRequest.TOKEN_AUTHENTICATION, jsonObject);
-        SocketClient.sendPacketAsyncStatic(request);
+        HandlerAuthClient.handlerUserConnexion("michel","1234");
         Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
         InterfaceClient.getMainStage().setScene(new Scene(root));
     }
