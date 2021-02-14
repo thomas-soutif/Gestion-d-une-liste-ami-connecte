@@ -9,4 +9,5 @@ import java.util.List;
 public interface IUserDAO extends DAO<AccountUser>{
     List<AccountUser> getAccountOfUsers();
 
+    boolean haveAccountUser(int user1Id);
 }
