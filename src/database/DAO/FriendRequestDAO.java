@@ -17,6 +17,36 @@ public class FriendRequestDAO implements IFriendRequestDAO{
 
 
     @Override
+    public FriendRequest getFriendRequestById(int id) {
+        try {
+            Statement database_instance = conn.createStatement();
+            String query = "SELECT * FROM friend_request WHERE id =" + id;
+            ResultSet result = database_instance.executeQuery(query);
+            UserDAO userDao = new UserDAO();
+            while (result.next()){
+                FriendRequest friendRequest = new FriendRequest();
+                AccountUser from_user = userDao.getAccountOfUser(result.getInt("from_user"));
+                AccountUser to_user = userDao.getAccountOfUser(result.getInt("to_user"));
+                friendRequest.setTo_user(to_user);
+                friendRequest.setFrom_user(from_user);
+                friendRequest.setId(result.getInt("id"));
+                friendRequest.setDate(result.getDate("date"));
+
+                return friendRequest;
+            }
+
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+
+
+        return null;
+
+
+
+    }
+
+    @Override
     public boolean delete(FriendRequest obj) {
         boolean ok = false;
         try{
@@ -170,4 +200,6 @@ public class FriendRequestDAO implements IFriendRequestDAO{
 
         return have_request_relation;
     }
+
+
 }

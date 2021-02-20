@@ -49,7 +49,22 @@ public enum TypeResponse {
             MainWindowController.getInstance().setFriendRequestListOnUI(jsonObject);
         }
     },
-    ACCEPT_FRIEND_REQUEST,
+    ACCEPT_FRIEND_REQUEST{
+        @Override
+        public void ClientHandling(Response response){
+            System.out.println("ACCEPT FRIEND REQUEST HANDLING");
+            JSONObject jsonObject = new JSONObject(response.getContent());
+            System.out.println(response.getStatusResponse());
+            if(response.getStatusResponse() == 200){
+                // If the server accepted the friend request,we can modify the UI
+                System.out.println("why");
+                MainWindowController.getInstance().setUIAfterFriendRequestHasBeenAcceptedByServer(jsonObject);
+            }
+            else{
+                MainWindowController.getInstance().setUIAfterFriendRequestHasBeenAcceptedByServer(jsonObject);
+            }
+        }
+    },
     REFUSE_FRIEND_REQUEST,
     REMOVE_FRIEND,
     CONNECTED_FRIEND,

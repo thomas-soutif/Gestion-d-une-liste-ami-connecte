@@ -5,11 +5,14 @@ import database.CLASSES.FriendRelation;
 import database.CLASSES.FriendRequest;
 import database.DAO.FriendRelationDAO;
 import database.DAO.FriendRequestDAO;
+import database.EXCEPTION.CustomException;
 import ihm.MainWindowController;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.awt.desktop.SystemSleepEvent;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,19 +108,26 @@ public enum TypeRequest {
             }
 
             FriendRequestDAO dao = new FriendRequestDAO();
-            List<AccountUser> list_user = new ArrayList<>();
-            List<FriendRequest> list_friend_relation = dao.getFriendRequestsOfUser(user.getId());
-            for (FriendRequest request_tuple : list_friend_relation) {
+            List<JSONObject> list_to_send = new ArrayList<>();
+            List<FriendRequest> list_friend_request = dao.getFriendRequestsOfUser(user.getId());
+            JSONObject customObject = new JSONObject();
+            for (FriendRequest request_tuple : list_friend_request) {
+                customObject.put("request_id",request_tuple.getId());
                 if (request_tuple.getFrom_user().getId() != user.getId()) {
-                    list_user.add(request_tuple.getFrom_user());
+                    customObject.put("firstname",request_tuple.getFrom_user().getFirstName());
+                    customObject.put("name",request_tuple.getFrom_user().getName());
+                    customObject.put("pseudo",request_tuple.getFrom_user().getPseudo());
                 } else if (request_tuple.getTo_user().getId() != user.getId()) {
-                    list_user.add(request_tuple.getTo_user());
+                    customObject.put("firstname",request_tuple.getTo_user().getFirstName());
+                    customObject.put("name",request_tuple.getTo_user().getName());
+                    customObject.put("pseudo",request_tuple.getTo_user().getPseudo());
                 }
+                list_to_send.add(customObject);
             }
 
             JSONObject jsonObject = new JSONObject();
             try {
-                jsonObject.put("list", list_user);
+                jsonObject.put("list_friend_request", list_to_send);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -126,7 +136,46 @@ public enum TypeRequest {
 
         }
     },
-    ACCEPT_FRIEND_REQUEST,
+    ACCEPT_FRIEND_REQUEST{
+        @Override
+        public void ServerHandling(Request request) {
+
+            FriendRequestDAO friendRequestDao = new FriendRequestDAO();
+            FriendRelationDAO friendRelationDao = new FriendRelationDAO();
+            JSONObject jsonObject = new JSONObject(request.getContent());
+            int friend_request_id = jsonObject.getInt("friend_request_id");
+            AccountUser user = request.getSender().getUser();
+            FriendRequest friend_request = friendRequestDao.getFriendRequestById(friend_request_id);
+            AccountUser userWhoAskedForTheFriendRelation = null;
+
+            if (friend_request.getFrom_user().getId() != user.getId()) {
+                // On ajoute celui qui a fait la demande d'ami
+                userWhoAskedForTheFriendRelation = friend_request.getFrom_user();
+            } else if (friend_request.getTo_user().getId() != user.getId()) {
+                // On ajoute celui qui a fait la demande d'ami
+                userWhoAskedForTheFriendRelation = friend_request.getTo_user();
+            }
+            // We construct the friend relation to add it to the database via the DAO
+            FriendRelation friend_relation = new FriendRelation();
+            friend_relation.setFirstUser(userWhoAskedForTheFriendRelation);
+            friend_relation.setSecondUser(user);
+            try {
+                friendRelationDao.insert(friend_relation);
+                // If everything is ok
+                Response response = new Response(TypeResponse.ACCEPT_FRIEND_REQUEST, 200, jsonObject);
+                request.getSender().sendPacket(response);
+            } catch (CustomException e){
+                System.out.println(e);
+                // An error occurs
+                Response response = new Response(TypeResponse.ACCEPT_FRIEND_REQUEST, 500, jsonObject);
+                request.getSender().sendPacket(response);
+            }
+
+
+
+        }
+
+    },
     REFUSE_FRIEND_REQUEST,
     REMOVE_FRIEND,
     CONNECTED_FRIEND,
