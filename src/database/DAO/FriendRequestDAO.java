@@ -107,13 +107,11 @@ public class FriendRequestDAO implements IFriendRequestDAO{
             Statement database_instance = conn.createStatement();
             String query = "SELECT * FROM friend_request WHERE from_user =" + userId + " OR to_user =" + userId;
             ResultSet result = database_instance.executeQuery(query);
-
+            UserDAO userDao = new UserDAO();
             while (result.next()){
                 FriendRequest friendRequest = new FriendRequest();
-                AccountUser from_user = new AccountUser();
-                from_user.setId(result.getInt("from_user"));
-                AccountUser to_user = new AccountUser();
-                to_user.setId(result.getInt("to_user"));
+                AccountUser from_user = userDao.getAccountOfUser(result.getInt("from_user"));
+                AccountUser to_user = userDao.getAccountOfUser(result.getInt("to_user"));
                 friendRequest.setTo_user(to_user);
                 friendRequest.setFrom_user(from_user);
                 friendRequest.setId(result.getInt("id"));

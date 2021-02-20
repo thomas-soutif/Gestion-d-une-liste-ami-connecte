@@ -2,7 +2,9 @@ package network.Common;
 
 import database.CLASSES.AccountUser;
 import database.CLASSES.FriendRelation;
+import database.CLASSES.FriendRequest;
 import database.DAO.FriendRelationDAO;
+import database.DAO.FriendRequestDAO;
 import ihm.MainWindowController;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,44 +55,76 @@ public enum TypeRequest {
         }
     },
     FRIEND_REQUEST,
-    FRIENDLIST{
-
+    FRIENDLIST {
         @Override
-        public void ServerHandling(Request request){
+        public void ServerHandling(Request request) {
             System.out.println("Get Friend List request");
             AccountUser user = request.getSender().getUser();
-            if(user == null){
-                Response response = new Response(TypeResponse.FRIENDLIST,401);
+            if (user == null) {
+                Response response = new Response(TypeResponse.FRIENDLIST, 401);
                 request.getSender().sendPacket(response);
-            }else{
+            } else {
 
                 FriendRelationDAO dao = new FriendRelationDAO();
 
                 List<FriendRelation> list_friend_relation = dao.getAllFriendsOfUser(user);
                 List<AccountUser> list_user = new ArrayList<>();
 
-                for(FriendRelation friend_relation : list_friend_relation){
-                    if(friend_relation.getFirstUser().getId() != user.getId() ){
+                for (FriendRelation friend_relation : list_friend_relation) {
+                    if (friend_relation.getFirstUser().getId() != user.getId()) {
                         list_user.add(friend_relation.getFirstUser());
-                    }else if(friend_relation.getSecondUser().getId() != user.getId()){
+                    } else if (friend_relation.getSecondUser().getId() != user.getId()) {
                         list_user.add(friend_relation.getSecondUser());
                     }
                 }
 
                 JSONObject jsonObject = new JSONObject();
                 try {
-                    jsonObject.put("list",list_user);
+                    jsonObject.put("list", list_user);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 System.out.println("Envoie de la liste d'ami");
-                Response response = new Response(TypeResponse.FRIENDLIST,200, jsonObject);
+                Response response = new Response(TypeResponse.FRIENDLIST, 200, jsonObject);
                 request.getSender().sendPacket(response);
 
             }
 
         }
 
+    },
+    FRIEND_REQUEST_LIST {
+        @Override
+        public void ServerHandling(Request request) {
+            System.out.println("Get FriendRequest List");
+            AccountUser user = request.getSender().getUser();
+            if (user == null) {
+                Response response = new Response(TypeResponse.FRIEND_REQUEST_LIST, 401);
+                request.getSender().sendPacket(response);
+                return;
+            }
+
+            FriendRequestDAO dao = new FriendRequestDAO();
+            List<AccountUser> list_user = new ArrayList<>();
+            List<FriendRequest> list_friend_relation = dao.getFriendRequestsOfUser(user.getId());
+            for (FriendRequest request_tuple : list_friend_relation) {
+                if (request_tuple.getFrom_user().getId() != user.getId()) {
+                    list_user.add(request_tuple.getFrom_user());
+                } else if (request_tuple.getTo_user().getId() != user.getId()) {
+                    list_user.add(request_tuple.getTo_user());
+                }
+            }
+
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("list", list_user);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Response response = new Response(TypeResponse.FRIEND_REQUEST_LIST, 200, jsonObject);
+            request.getSender().sendPacket(response);
+
+        }
     },
     ACCEPT_FRIEND_REQUEST,
     REFUSE_FRIEND_REQUEST,

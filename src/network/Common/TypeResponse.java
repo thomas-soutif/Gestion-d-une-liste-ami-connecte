@@ -41,6 +41,14 @@ public enum TypeResponse {
 
         }
     },
+    FRIEND_REQUEST_LIST{
+        @Override
+        public void ClientHandling(Response response){
+            System.out.println("List Request Friend Handling");
+            JSONObject jsonObject = new JSONObject(response.getContent());
+            MainWindowController.getInstance().setFriendRequestListOnUI(jsonObject);
+        }
+    },
     ACCEPT_FRIEND_REQUEST,
     REFUSE_FRIEND_REQUEST,
     REMOVE_FRIEND,

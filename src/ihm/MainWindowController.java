@@ -1,5 +1,6 @@
 package ihm;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import database.CLASSES.AccountUser;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -42,8 +43,11 @@ public class MainWindowController {
         System.out.println("ayui");
         JSONObject jsonObject = new JSONObject();
         System.out.println("Demande de la liste d'ami");
+        this.friendList.getItems().add(new Label("Récupération de la liste de vos amis ..."));
         Request request = new Request(TypeRequest.FRIENDLIST, jsonObject);
         SocketClient.sendPacketAsyncStatic(request);
+        Request request2 = new Request(TypeRequest.FRIEND_REQUEST_LIST,jsonObject);
+        SocketClient.sendPacketAsyncStatic(request2);
 
     }
 
@@ -67,6 +71,7 @@ public class MainWindowController {
 
     public void setFriendListOnUI(JSONObject object){
         Platform.runLater(() -> {
+            this.friendList.getItems().remove(0); // On retire le message définit dans l'init
             JSONArray list_user = object.getJSONArray("list");
             for( Object user_object : list_user){
                 JSONObject user = (JSONObject) user_object;
@@ -74,6 +79,7 @@ public class MainWindowController {
                 Label label_name= new Label(user.getString("firstName") + " " + user.getString("name"));
                 label_name.getProperties().put("user_id",user.getInt("id"));
                 hBox.getChildren().add(label_name);
+
                 this.friendList.getItems().add(hBox);
                 System.out.println(user);
 
@@ -86,6 +92,25 @@ public class MainWindowController {
 
     }
 
+    public void setFriendRequestListOnUI(JSONObject object){
+        Platform.runLater(() -> {
+            System.out.println("setFriendRequestListOnUi");
+            JSONArray list_user = object.getJSONArray("list");
+            for( Object user_object : list_user){
+                JSONObject user = (JSONObject) user_object;
+                HBox hBox = new HBox();
+                System.out.println(user);
+                Label label_name= new Label(user.getString("firstName") + " " + user.getString("name"));
+                label_name.getProperties().put("user_id",user.getInt("id"));
+                hBox.getChildren().add(label_name);
+
+                this.listViewFriendRequest.getItems().add(hBox);
+                System.out.println(user);
+
+            }
+        });
+
+    }
     public void nothing_for_the_moment(){
         HBox hbox = new HBox();
 
