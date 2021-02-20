@@ -3,7 +3,7 @@ package database.DAO;
 import database.CLASSES.AccountUser;
 import database.CLASSES.FriendRelation;
 import database.EXCEPTION.ErrorType;
-import database.EXCEPTION.FriendRequestException;
+import database.EXCEPTION.CustomException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -53,15 +53,30 @@ public class FriendRelationDAO implements IFriendRelationDAO{
          * */
         boolean have_friend_relation = true;
         try{
-            String query = "SELECT COUNT(*) FROM friend_relation WHERE first_user = ? AND second_user = ?";
-            PreparedStatement preparedStatement =conn.prepareStatement(query);
-            preparedStatement.setInt(1,firstUser.getId());
-            preparedStatement.setInt(2,secondUser.getId());
+            String query1 = "SELECT COUNT(*) FROM friend_relation WHERE first_user = ? AND second_user = ?";
+            String query2 = "SELECT COUNT(*) FROM friend_relation WHERE second_user = ? AND first_user = ?";
 
-            ResultSet result = preparedStatement.executeQuery();
+            PreparedStatement preparedStatement1 =conn.prepareStatement(query1);
+            preparedStatement1.setInt(1,firstUser.getId());
+            preparedStatement1.setInt(2,secondUser.getId());
+
+            PreparedStatement preparedStatement2 =conn.prepareStatement(query2);
+            preparedStatement2.setInt(1,firstUser.getId());
+            preparedStatement2.setInt(2,secondUser.getId());
+
+            ResultSet result = preparedStatement1.executeQuery();
             while(result.next()){
                 if(result.getInt("count") > 0){
-                    have_friend_relation= true;
+                    return true;
+                }else{
+                    have_friend_relation = false;
+                }
+            }
+
+            result = preparedStatement2.executeQuery();
+            while(result.next()){
+                if(result.getInt("count") > 0){
+                    have_friend_relation = true;
                 }else{
                     have_friend_relation = false;
                 }
@@ -105,6 +120,19 @@ public class FriendRelationDAO implements IFriendRelationDAO{
     }
 
     @Override
+    public FriendRelation getFriendRelationById(int id) {
+
+        List<FriendRelation> list = getAllFriendRelation();
+        
+        for(FriendRelation relation : list){
+            if(relation.getId() == id){
+                return relation;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public boolean delete(FriendRelation obj) {
 
         boolean ok = false;
@@ -122,7 +150,7 @@ public class FriendRelationDAO implements IFriendRelationDAO{
     }
 
     @Override
-    public FriendRelation insert(FriendRelation obj) throws FriendRequestException {
+    public FriendRelation insert(FriendRelation obj) throws CustomException {
         /**
          * Insérer une relation dans la base de données. L'objet retourné contient dans son id la même que celle généré par la base de données lors de l'insertion.
          * @return FriendRelation
@@ -132,7 +160,7 @@ public class FriendRelationDAO implements IFriendRelationDAO{
             boolean is_friend_relation_exist = this.haveFriendRelation(obj.getFirstUser(), obj.getSecondUser());
             if(is_friend_relation_exist){
                 // Si jamais la relation existe déja, on ne peut pas insérer dans la base de données, donc il faut levé une exceptions
-                throw new FriendRequestException("Les utilisateurs spécifiés (" + obj.getFirstUser().getId() +
+                throw new CustomException("Les utilisateurs spécifiés (" + obj.getFirstUser().getId() +
                         " et " + obj.getSecondUser().getId()+ ") sont déja amis", ErrorType.FRIEND_RELATION_ALREADY_EXIST);
             }
 
@@ -161,9 +189,18 @@ public class FriendRelationDAO implements IFriendRelationDAO{
     }
 
     @Override
-    public boolean update(FriendRelation obj) {
+    public boolean update(FriendRelation obj) throws CustomException {
+
+        if(obj.getId() == null){
+            throw new CustomException("L'objet FriendRelation doit avoir un id set et existant pour pouvoir être mit à jour dans la bd", ErrorType.ID_IS_NULL);
+        }
 
         boolean ok = false;
+
+        if(haveFriendRelation(obj.getFirstUser(), obj.getSecondUser())){
+            throw new CustomException("Les utilisateurs spécifiés (" + obj.getFirstUser().getId() +
+                    " et " + obj.getSecondUser().getId()+ ") sont déja amis", ErrorType.FRIEND_RELATION_ALREADY_EXIST);
+        }
         try{
             PreparedStatement prepareStatement = conn.prepareStatement("UPDATE friend_relation SET first_user = ?, second_user = ?, date = ? WHERE id = ?");
 
