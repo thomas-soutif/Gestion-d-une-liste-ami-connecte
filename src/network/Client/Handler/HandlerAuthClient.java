@@ -12,9 +12,8 @@ public final class HandlerAuthClient {
     /**
      * @param pseudo Pseudo de l'utilisateur
      * @param motDePasse Mot de passe de l'utilisateur
-     * @return success
      */
-    public static boolean handlerUserConnexion(String pseudo, String motDePasse){
+    public static void handlerUserConnexionRequest(String pseudo, String motDePasse){
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("pseudo",pseudo);
@@ -23,8 +22,28 @@ public final class HandlerAuthClient {
             SocketClient.sendPacketAsyncStatic(request);
         } catch (JSONException e) {
             e.printStackTrace();
-            return false;
         }
-        return true;
     }
+
+    /**
+     *
+     * @param pseudo Pseudo de l'utilisateur
+     * @param motDePasse Mot de passe de l'utilisateur
+     * @param prenom Prenom de l'utilisateur
+     * @param nom Nom de l'utilisateur
+     */
+    public static void handlerUserInscriptionRequest(String pseudo, String motDePasse, String prenom, String nom){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("pseudo",pseudo);
+            jsonObject.put("password",motDePasse);
+            jsonObject.put("prenom", prenom);
+            jsonObject.put("nom", nom);
+            Request request = new Request(TypeRequest.INSCRIPTION, jsonObject);
+            SocketClient.sendPacketAsyncStatic(request);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

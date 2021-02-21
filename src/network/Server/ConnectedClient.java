@@ -61,7 +61,7 @@ public class ConnectedClient implements Runnable {
                         packet.setSender(this);
                         if (packet.getTypePacket() == Packet.TypePacket.REQUEST) {
                             System.out.println("Paquet Request");
-                            if (((Request)packet).getTypeRequest() == TypeRequest.DISCONNECTION)
+                            if (((Request)packet).getTypeRequest() == TypeRequest.DISCONNECTION_SOCKET)
                                 isActive = false;
                             ((Request) packet).getTypeRequest().ServerHandling((Request) packet);
                         } else if (packet.getTypePacket() == Packet.TypePacket.RESPONSE)

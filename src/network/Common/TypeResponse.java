@@ -36,7 +36,8 @@ public enum TypeResponse {
     REFUSE_FRIEND_REQUEST,
     REMOVE_FRIEND,
     CONNECTED_FRIEND,
-    DISCONNECTION;
+    DISCONNECTION_SOCKET,
+    DISCONNECTION_USER;
 
     public void ClientHandling(Response response) {
         System.out.println("default");

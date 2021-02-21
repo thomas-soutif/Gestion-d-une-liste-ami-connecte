@@ -43,7 +43,7 @@ public class SocketClient {
     public static void close() {
         if (socketClient != null) {
             try {
-                Request request = new Request(TypeRequest.DISCONNECTION);
+                Request request = new Request(TypeRequest.DISCONNECTION_SOCKET);
                 sendPacketStatic(request);
                 socketClient.socket.close();
             } catch (IOException e) {

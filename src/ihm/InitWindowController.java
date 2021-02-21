@@ -10,8 +10,6 @@ import network.Client.Handler.HandlerAuthClient;
 import network.Client.SocketClient;
 import network.Common.Request;
 import network.Common.TypeRequest;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -31,7 +29,7 @@ public class InitWindowController {
     @FXML
     private void connexionMichel(ActionEvent event) throws IOException {
         System.out.println("Bouton Michel");
-        HandlerAuthClient.handlerUserConnexion("michel","1234");
+        HandlerAuthClient.handlerUserConnexionRequest("michel","1234");
         Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
         InterfaceClient.getMainStage().setScene(new Scene(root));
     }

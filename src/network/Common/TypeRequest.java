@@ -18,9 +18,8 @@ public enum TypeRequest {
     INSCRIPTION {
         @Override
         public void ServerHandling(Request request) {
-            System.out.println("INSCRIPTION str");
-            Response response = new Response(TypeResponse.TOKEN_AUTHENTICATION, 200);
-            request.getSender().sendPacket(response);
+            System.out.println("Traitement d'une inscription en cours du client " + request.getSender().getId());
+            HandlerAuthServer.handlerUserInscription(request);
 
         }
     },
@@ -30,7 +29,8 @@ public enum TypeRequest {
     REFUSE_FRIEND_REQUEST,
     REMOVE_FRIEND,
     CONNECTED_FRIEND,
-    DISCONNECTION;
+    DISCONNECTION_SOCKET,
+    DISCONNECTION_USER;
 
     public void ClientHandling(Request request) {
         System.out.println("default");
