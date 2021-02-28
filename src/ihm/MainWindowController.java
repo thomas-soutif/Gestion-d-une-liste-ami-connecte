@@ -21,6 +21,8 @@ import network.Common.TypeRequest;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.swing.text.StyledEditorKit;
+import javax.xml.stream.FactoryConfigurationError;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,20 +40,24 @@ public class MainWindowController {
     private Button addAFriendButton;
     private String accept_button_text = "Accept";
     private String refuse_button_text = "Refuse";
-
+    private Boolean not_have_friend_list;
+    private Boolean not_have_friend_request;
     @FXML
     public void initialize() {
         System.out.println("aaa");
         instance = this;
+        this.not_have_friend_list = false;
+        this.not_have_friend_request = false;
         System.out.println("ayui");
         JSONObject jsonObject = new JSONObject();
         System.out.println("Demande de la liste d'ami");
+        Request request2 = new Request(TypeRequest.FRIEND_REQUEST_LIST,jsonObject);
+        SocketClient.sendPacketAsyncStatic(request2);
         this.friendList.getItems().add(new Label("Récupération de la liste de vos amis ..."));
         Request request = new Request(TypeRequest.FRIENDLIST, jsonObject);
         //SocketClient.sendPacketAsyncStatic(request);
         SocketClient.sendPacketStatic(request);
-        Request request2 = new Request(TypeRequest.FRIEND_REQUEST_LIST,jsonObject);
-        SocketClient.sendPacketAsyncStatic(request2);
+
 
     }
 
@@ -90,7 +96,12 @@ public class MainWindowController {
 
         JSONArray list_user = object.getJSONArray("list");
         System.out.println(list_user);
+
+        if (this.not_have_friend_list){
+            this.friendList.getItems().removeAll(this.friendList.getItems());
+        }
         for( Object user_object : list_user){
+            this.not_have_friend_list = false;
             JSONObject user = (JSONObject) user_object;
             HBox hBox = new HBox();
             Label label_name= new Label(user.getString("firstName") + " " + user.getString("name"));
@@ -114,6 +125,20 @@ public class MainWindowController {
                 SocketClient.sendPacketAsyncStatic(new Request(TypeRequest.REMOVE_FRIEND,jsonObject));
             });
         }
+        System.out.println(this.friendList.getItems());
+        if (this.friendList.getItems().isEmpty() && !this.not_have_friend_list ){
+            HBox hBox = new HBox();
+            Label label_name= new Label("Vous n'avez pas d'ami (c'est triste ceci dit)");
+            hBox.getChildren().add(label_name);
+            this.friendList.getItems().add(hBox);
+            this.not_have_friend_list = true;
+            if(this.not_have_friend_request){
+                HBox hBox2 = new HBox();
+                hBox2.getChildren().add(new Label("Ah, vous n'avez pas non plus de reqûetes d'amis on dirait.. On est avec vous ! (bon m'enfin nous on est un système qui tourne avec Java hein, on est pas vraiment réel.. donc prend pas trop la confiance"));
+
+                this.friendList.getItems().add(hBox2);
+            }
+        }
 
     }
 
@@ -122,6 +147,9 @@ public class MainWindowController {
             System.out.println("setFriendRequestListOnUi");
             JSONArray list_friend_request = object.getJSONArray("list_friend_request");
             int i=0;
+            if (this.not_have_friend_request){
+                this.listViewFriendRequest.getItems().removeAll(this.listViewFriendRequest.getItems());
+            }
             for( Object friend_request : list_friend_request){
                 JSONObject friend_request_json = (JSONObject) friend_request;
                 System.out.println(friend_request);
@@ -161,6 +189,15 @@ public class MainWindowController {
 
 
             }
+
+            if (this.listViewFriendRequest.getItems().isEmpty() && !this.not_have_friend_request ){
+                HBox hBox = new HBox();
+                Label label_name= new Label("Vous n'avez pas de reqûetes - Tout vient à point à celui qui sait attendre (= ");
+                hBox.getChildren().add(label_name);
+                this.listViewFriendRequest.getItems().add(hBox);
+                this.not_have_friend_request = true;
+            }
+
         });
 
     }
