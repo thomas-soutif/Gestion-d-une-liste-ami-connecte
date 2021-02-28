@@ -61,7 +61,8 @@ public enum TypeResponse {
                 MainWindowController.getInstance().setUIAfterFriendRequestHasBeenAcceptedByServer(jsonObject);
             }
             else{
-                MainWindowController.getInstance().setUIAfterFriendRequestHasBeenAcceptedByServer(jsonObject);
+                //MainWindowController.getInstance().setUIAfterFriendRequestHasBeenAcceptedByServer(jsonObject);
+                //TODO: Ajouter si j'ai le temps un message d'erreur pour dire qu'il y'a eu un problème
             }
         }
     },

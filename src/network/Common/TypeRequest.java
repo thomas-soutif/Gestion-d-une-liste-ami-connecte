@@ -159,10 +159,14 @@ public enum TypeRequest {
             FriendRelation friend_relation = new FriendRelation();
             friend_relation.setFirstUser(userWhoAskedForTheFriendRelation);
             friend_relation.setSecondUser(user);
+            jsonObject.put("firstName",userWhoAskedForTheFriendRelation.getFirstName()).put("pseudo", userWhoAskedForTheFriendRelation.getPseudo()).put(
+                    "name",userWhoAskedForTheFriendRelation.getName()).put("id",userWhoAskedForTheFriendRelation.getId());
             try {
                 friendRelationDao.insert(friend_relation);
                 // If everything is ok
                 Response response = new Response(TypeResponse.ACCEPT_FRIEND_REQUEST, 200, jsonObject);
+                // On doit supprimer la friend request de la base de données
+                friendRequestDao.delete(friend_request);
                 request.getSender().sendPacket(response);
             } catch (CustomException e){
                 System.out.println(e);

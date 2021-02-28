@@ -1,9 +1,7 @@
 package ihm;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import database.CLASSES.AccountUser;
 import javafx.application.Platform;
-import javafx.beans.Observable;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,6 +24,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MainWindowController {
 
@@ -36,7 +36,8 @@ public class MainWindowController {
     private ListView friendList;
     @FXML
     private Button addAFriendButton;
-
+    private String accept_button_text = "Accept";
+    private String refuse_button_text = "Refuse";
 
     @FXML
     public void initialize() {
@@ -47,7 +48,8 @@ public class MainWindowController {
         System.out.println("Demande de la liste d'ami");
         this.friendList.getItems().add(new Label("Récupération de la liste de vos amis ..."));
         Request request = new Request(TypeRequest.FRIENDLIST, jsonObject);
-        SocketClient.sendPacketAsyncStatic(request);
+        //SocketClient.sendPacketAsyncStatic(request);
+        SocketClient.sendPacketStatic(request);
         Request request2 = new Request(TypeRequest.FRIEND_REQUEST_LIST,jsonObject);
         SocketClient.sendPacketAsyncStatic(request2);
 
@@ -73,24 +75,31 @@ public class MainWindowController {
 
     public void setFriendListOnUI(JSONObject object){
         Platform.runLater(() -> {
+            System.out.println("Ajout de la liste d'ami");
             this.friendList.getItems().remove(0); // On retire le message définit dans l'init
-            JSONArray list_user = object.getJSONArray("list");
-            for( Object user_object : list_user){
-                JSONObject user = (JSONObject) user_object;
-                HBox hBox = new HBox();
-                Label label_name= new Label(user.getString("firstName") + " " + user.getString("name"));
-                label_name.getProperties().put("user_id",user.getInt("id"));
-                hBox.getChildren().add(label_name);
-
-                this.friendList.getItems().add(hBox);
-                System.out.println(user);
-
-            }
-
+            addFriendsOnListOnUI(object);
+            return;
 
 
 
         });
+
+    }
+
+    public void addFriendsOnListOnUI(JSONObject object){
+
+        JSONArray list_user = object.getJSONArray("list");
+        for( Object user_object : list_user){
+            JSONObject user = (JSONObject) user_object;
+            HBox hBox = new HBox();
+            Label label_name= new Label(user.getString("firstName") + " " + user.getString("name"));
+            label_name.getProperties().put("user_id",user.getInt("id"));
+            hBox.getChildren().add(label_name);
+
+            this.friendList.getItems().add(hBox);
+            System.out.println(user);
+
+        }
 
     }
 
@@ -135,22 +144,50 @@ public class MainWindowController {
     public void setUIAfterFriendRequestHasBeenAcceptedByServer(JSONObject object){
         Platform.runLater(() -> {
             System.out.println("here");
+            System.out.println(object);
             int friend_request_id = object.getInt("friend_request_id");
             ObservableList list_hbox = this.listViewFriendRequest.getItems();
+
+            var ref_item_to_remove = new Object() {
+                Node item_to_remove = null;
+                public void set_item(Node item){
+                    this.item_to_remove = item;
+                }
+            };
+
             list_hbox.forEach((item) -> {
+
                 HBox hbox = (HBox) item;
                 ObservableList<Node> list_nodes = hbox.getChildren();
+
+
                 list_nodes.forEach((node_element) ->{
+
                     if(node_element instanceof Button){
                         System.out.println(node_element.getProperties().get("idFriendRequest"));
                         int current_friend_request_id = (int) node_element.getProperties().get("idFriendRequest");
-                        if (current_friend_request_id == object.getInt("friend_request_id")){
+                        if (current_friend_request_id == object.getInt("friend_request_id") && ((Button) node_element).getText().equals(this.getAccept_button_text())){
                             // We are on the right button where we must delete the parent hbox because the request was accepted
                             // TODO: A continuer : il faut enlever des friend request la hbox et ajouter la nouvelle relation dans la liste friendList, en pensant à changer le paramètre de cette fonction avec object qui ns renvoie aussi le nom de la personne avec qui l'utlisateur connecté est ami
+                            List<JSONObject> list_to_send = new ArrayList<>();
+                            list_to_send.add(object);
+                            JSONObject jsonObject = new JSONObject();
+                            jsonObject.put("list", list_to_send);
+                            addFriendsOnListOnUI(jsonObject); // On réutilise les fonctions de notre classe pour set l'interface
+                            ref_item_to_remove.set_item(node_element.getParent());
+
+
                         }
                     }
+
                 });
+
             });
+
+            if (ref_item_to_remove.item_to_remove != null){
+                this.listViewFriendRequest.getItems().remove(ref_item_to_remove.item_to_remove);
+            }
+
 
 
         });
@@ -186,11 +223,19 @@ public class MainWindowController {
 
     }
 
+    public String getAccept_button_text() {
+        return accept_button_text;
+    }
+
+    public String getRefuse_button_text() {
+        return refuse_button_text;
+    }
+
     public static MainWindowController getInstance() {
         return instance;
     }
 
-    private addAFriendListHboxInFriendList(){
+    private void addAFriendListHboxInFriendList(){
         // TODO: A continuer
     }
 }
