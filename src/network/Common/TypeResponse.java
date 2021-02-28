@@ -57,7 +57,6 @@ public enum TypeResponse {
             System.out.println(response.getStatusResponse());
             if(response.getStatusResponse() == 200){
                 // If the server accepted the friend request,we can modify the UI
-                System.out.println("why");
                 MainWindowController.getInstance().setUIAfterFriendRequestHasBeenAcceptedByServer(jsonObject);
             }
             else{
@@ -66,8 +65,36 @@ public enum TypeResponse {
             }
         }
     },
-    REFUSE_FRIEND_REQUEST,
-    REMOVE_FRIEND,
+    REFUSE_FRIEND_REQUEST{
+        @Override
+        public void ClientHandling(Response response){
+            System.out.println("REFUSE FRIEND REQUEST HANDLING");
+            JSONObject jsonObject = new JSONObject(response.getContent());
+            System.out.println(response.getStatusResponse());
+            if(response.getStatusResponse() == 200){
+                MainWindowController.getInstance().setUIAfterFriendRequestHasBeenRefusedByServer(jsonObject);
+            }
+            else{
+                //MainWindowController.getInstance().setUIAfterFriendRequestHasBeenAcceptedByServer(jsonObject);
+                //TODO: Ajouter si j'ai le temps un message d'erreur pour dire qu'il y'a eu un problème
+            }
+        }
+    },
+    REMOVE_FRIEND{
+        @Override
+        public void ClientHandling(Response response){
+            System.out.println("REMOVE FRIEND REQUEST HANDLING");
+            JSONObject jsonObject = new JSONObject(response.getContent());
+            System.out.println(response.getStatusResponse());
+            if(response.getStatusResponse() == 200){
+                MainWindowController.getInstance().setUIAfterFriendRemove(jsonObject);
+            }
+            else{
+                //MainWindowController.getInstance().setUIAfterFriendRequestHasBeenAcceptedByServer(jsonObject);
+                //TODO: Ajouter si j'ai le temps un message d'erreur pour dire qu'il y'a eu un problème
+            }
+        }
+    },
     CONNECTED_FRIEND,
     DISCONNECTION;
 

@@ -71,13 +71,22 @@ public enum TypeRequest {
                 FriendRelationDAO dao = new FriendRelationDAO();
 
                 List<FriendRelation> list_friend_relation = dao.getAllFriendsOfUser(user);
-                List<AccountUser> list_user = new ArrayList<>();
+                List<JSONObject> list_user = new ArrayList<>();
 
                 for (FriendRelation friend_relation : list_friend_relation) {
+                    JSONObject customObject = new JSONObject();
                     if (friend_relation.getFirstUser().getId() != user.getId()) {
-                        list_user.add(friend_relation.getFirstUser());
+                        customObject.put("firstName",friend_relation.getFirstUser().getFirstName());
+                        customObject.put("name",friend_relation.getFirstUser().getName());
+                        customObject.put("pseudo",friend_relation.getFirstUser().getPseudo());
+                        customObject.put("friend_relation_id",friend_relation.getId());
+                        list_user.add(customObject);
                     } else if (friend_relation.getSecondUser().getId() != user.getId()) {
-                        list_user.add(friend_relation.getSecondUser());
+                        customObject.put("firstName",friend_relation.getSecondUser().getFirstName());
+                        customObject.put("name",friend_relation.getSecondUser().getName());
+                        customObject.put("pseudo",friend_relation.getSecondUser().getPseudo());
+                        customObject.put("friend_relation_id",friend_relation.getId());
+                        list_user.add(customObject);
                     }
                 }
 
@@ -168,7 +177,7 @@ public enum TypeRequest {
                 // On doit supprimer la friend request de la base de données
                 friendRequestDao.delete(friend_request);
                 request.getSender().sendPacket(response);
-            } catch (CustomException e){
+            } catch (CustomException | SQLException e){
                 System.out.println(e);
                 // An error occurs
                 Response response = new Response(TypeResponse.ACCEPT_FRIEND_REQUEST, 500, jsonObject);
@@ -180,8 +189,51 @@ public enum TypeRequest {
         }
 
     },
-    REFUSE_FRIEND_REQUEST,
-    REMOVE_FRIEND,
+    REFUSE_FRIEND_REQUEST{
+        @Override
+        public void ServerHandling(Request request) {
+
+            FriendRequestDAO friendRequestDao = new FriendRequestDAO();
+            JSONObject jsonObject = new JSONObject(request.getContent());
+            int friend_request_id = jsonObject.getInt("friend_request_id");
+            AccountUser user = request.getSender().getUser();
+            FriendRequest friend_request = friendRequestDao.getFriendRequestById(friend_request_id);
+            //Just have to delete the friend request
+            try {
+                friendRequestDao.delete(friend_request);
+                // If everything is ok
+                Response response = new Response(TypeResponse.REFUSE_FRIEND_REQUEST, 200, jsonObject);
+                request.getSender().sendPacket(response);
+            } catch ( SQLException e){
+                System.out.println(e);
+                // An error occurs
+                Response response = new Response(TypeResponse.REFUSE_FRIEND_REQUEST, 500, jsonObject);
+                request.getSender().sendPacket(response);
+            }
+
+
+
+        }
+    },
+    REMOVE_FRIEND{
+        @Override
+        public void ServerHandling(Request request) {
+
+            FriendRelationDAO friendRelationDAO = new FriendRelationDAO();
+            JSONObject jsonObject = new JSONObject(request.getContent());
+            int friend_relation_id = jsonObject.getInt("friend_relation_id");
+            FriendRelation relation = friendRelationDAO.getFriendRelationById(friend_relation_id);
+            try{
+                friendRelationDAO.delete(relation);
+                Response response = new Response(TypeResponse.REMOVE_FRIEND, 200, jsonObject);
+                request.getSender().sendPacket(response);
+
+            } catch (Exception e) {
+                System.out.println(e);
+                Response response = new Response(TypeResponse.REMOVE_FRIEND, 500, jsonObject);
+            }
+        }
+    },
     CONNECTED_FRIEND,
     DISCONNECTION;
 

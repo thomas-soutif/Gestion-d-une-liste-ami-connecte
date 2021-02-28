@@ -3,6 +3,7 @@ import database.ConnexionPostGreSQL;
 import database.EXCEPTION.CustomException;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 public interface DAO<T> {
 
@@ -13,7 +14,7 @@ public interface DAO<T> {
      *
      * @param obj
      */
-    boolean delete(T obj);
+    boolean delete(T obj) throws SQLException;
 
     /**
      * Permet de créer une entrée dans la base de données par rapport à un objet

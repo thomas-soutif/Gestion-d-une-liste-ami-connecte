@@ -89,16 +89,30 @@ public class MainWindowController {
     public void addFriendsOnListOnUI(JSONObject object){
 
         JSONArray list_user = object.getJSONArray("list");
+        System.out.println(list_user);
         for( Object user_object : list_user){
             JSONObject user = (JSONObject) user_object;
             HBox hBox = new HBox();
             Label label_name= new Label(user.getString("firstName") + " " + user.getString("name"));
-            label_name.getProperties().put("user_id",user.getInt("id"));
+            label_name.getProperties();
+            Button button_remove_friend = new Button("Remove");
+            button_remove_friend.getProperties().put("friend_relation_id",user.getInt("friend_relation_id"));
+            button_remove_friend.setMaxHeight(70);
             hBox.getChildren().add(label_name);
+            hBox.getChildren().add(button_remove_friend);
 
             this.friendList.getItems().add(hBox);
             System.out.println(user);
 
+
+            button_remove_friend.setOnAction((ActionEvent event) ->{
+                Button button = (Button) event.getSource();
+                Object object_user_id= button.getProperties().get("friend_relation_id");
+                int user_id = (int) object_user_id;
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("friend_relation_id",user_id);
+                SocketClient.sendPacketAsyncStatic(new Request(TypeRequest.REMOVE_FRIEND,jsonObject));
+            });
         }
 
     }
@@ -135,6 +149,16 @@ public class MainWindowController {
                     SocketClient.sendPacketAsyncStatic(new Request(TypeRequest.ACCEPT_FRIEND_REQUEST,jsonObject));
                 });
 
+                button_refuse.setOnAction((ActionEvent event) ->{
+                    Button button = (Button) event.getSource();
+                    System.out.println(button.getProperties());
+                    Object object_friend_request_id= button.getProperties().get("idFriendRequest");
+                    int friend_request_id = (int) object_friend_request_id;
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("friend_request_id",friend_request_id);
+                    SocketClient.sendPacketAsyncStatic(new Request(TypeRequest.REFUSE_FRIEND_REQUEST,jsonObject));
+                });
+
 
             }
         });
@@ -168,7 +192,6 @@ public class MainWindowController {
                         int current_friend_request_id = (int) node_element.getProperties().get("idFriendRequest");
                         if (current_friend_request_id == object.getInt("friend_request_id") && ((Button) node_element).getText().equals(this.getAccept_button_text())){
                             // We are on the right button where we must delete the parent hbox because the request was accepted
-                            // TODO: A continuer : il faut enlever des friend request la hbox et ajouter la nouvelle relation dans la liste friendList, en pensant à changer le paramètre de cette fonction avec object qui ns renvoie aussi le nom de la personne avec qui l'utlisateur connecté est ami
                             List<JSONObject> list_to_send = new ArrayList<>();
                             list_to_send.add(object);
                             JSONObject jsonObject = new JSONObject();
@@ -178,6 +201,7 @@ public class MainWindowController {
 
 
                         }
+
                     }
 
                 });
@@ -193,6 +217,88 @@ public class MainWindowController {
         });
 
     }
+
+
+
+    public void setUIAfterFriendRequestHasBeenRefusedByServer(JSONObject object){
+        Platform.runLater(() -> {
+            System.out.println(object);
+            int friend_request_id = object.getInt("friend_request_id");
+            ObservableList list_hbox = this.listViewFriendRequest.getItems();
+
+            var ref_item_to_remove = new Object() {
+                Node item_to_remove = null;
+                public void set_item(Node item){
+                    this.item_to_remove = item;
+                }
+            };
+
+            list_hbox.forEach((item) -> {
+
+                HBox hbox = (HBox) item;
+                ObservableList<Node> list_nodes = hbox.getChildren();
+
+
+                list_nodes.forEach((node_element) ->{
+
+                    if(node_element instanceof Button){
+                        int current_friend_request_id = (int) node_element.getProperties().get("idFriendRequest");
+                        if (current_friend_request_id == object.getInt("friend_request_id") && ((Button) node_element).getText().equals(this.getRefuse_button_text())){
+                            // We are on the right button where we must delete the parent hbox because the request was refused
+                            ref_item_to_remove.set_item(node_element.getParent());
+                        }
+                    }
+                });
+
+            });
+
+            if (ref_item_to_remove.item_to_remove != null){
+                this.listViewFriendRequest.getItems().remove(ref_item_to_remove.item_to_remove);
+            }
+
+
+
+        });
+
+    }
+
+    public void setUIAfterFriendRemove(JSONObject object){
+        Platform.runLater(() -> {
+            int friend_relation_id = object.getInt("friend_relation_id");
+            ObservableList list_hbox = this.friendList.getItems();
+
+            var ref_item_to_remove = new Object() {
+                Node item_to_remove = null;
+                public void set_item(Node item){
+                    this.item_to_remove = item;
+                }
+            };
+
+            list_hbox.forEach((item) -> {
+
+                HBox hbox = (HBox) item;
+                ObservableList<Node> list_nodes = hbox.getChildren();
+
+
+                list_nodes.forEach((node_element) ->{
+
+                    if(node_element instanceof Button){
+                        int current_friend_relation_id = (int) node_element.getProperties().get("friend_relation_id");
+                        if (current_friend_relation_id == object.getInt("friend_relation_id")){
+                            // We are on the right button where we must delete the parent hbox because we removed the friend
+                            ref_item_to_remove.set_item(node_element.getParent());
+                        }
+                    }
+                });
+
+            });
+            if (ref_item_to_remove.item_to_remove != null){
+                this.friendList.getItems().remove(ref_item_to_remove.item_to_remove);
+            }
+        });
+
+    }
+
     public void nothing_for_the_moment(){
         HBox hbox = new HBox();
 

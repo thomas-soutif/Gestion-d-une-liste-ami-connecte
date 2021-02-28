@@ -47,7 +47,7 @@ public class FriendRequestDAO implements IFriendRequestDAO{
     }
 
     @Override
-    public boolean delete(FriendRequest obj) {
+    public boolean delete(FriendRequest obj) throws SQLException {
         boolean ok = false;
         try{
             Statement database_instance = conn.createStatement();
