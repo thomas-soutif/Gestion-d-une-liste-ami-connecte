@@ -119,8 +119,9 @@ public enum TypeRequest {
             FriendRequestDAO dao = new FriendRequestDAO();
             List<JSONObject> list_to_send = new ArrayList<>();
             List<FriendRequest> list_friend_request = dao.getFriendRequestsOfUser(user.getId());
-            JSONObject customObject = new JSONObject();
+
             for (FriendRequest request_tuple : list_friend_request) {
+                JSONObject customObject = new JSONObject();
                 customObject.put("request_id",request_tuple.getId());
                 if (request_tuple.getFrom_user().getId() != user.getId()) {
                     customObject.put("firstname",request_tuple.getFrom_user().getFirstName());
@@ -173,6 +174,7 @@ public enum TypeRequest {
             try {
                 friendRelationDao.insert(friend_relation);
                 // If everything is ok
+                jsonObject.put("friend_relation_id",friend_relation.getId());
                 Response response = new Response(TypeResponse.ACCEPT_FRIEND_REQUEST, 200, jsonObject);
                 // On doit supprimer la friend request de la base de données
                 friendRequestDao.delete(friend_request);

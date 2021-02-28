@@ -135,7 +135,7 @@ public class FriendRequestDAO implements IFriendRequestDAO{
         List<FriendRequest> list = new ArrayList<>();
         try {
             Statement database_instance = conn.createStatement();
-            String query = "SELECT * FROM friend_request WHERE from_user =" + userId + " OR to_user =" + userId;
+            String query = "SELECT * FROM friend_request WHERE to_user =" + userId;
             ResultSet result = database_instance.executeQuery(query);
             UserDAO userDao = new UserDAO();
             while (result.next()){
