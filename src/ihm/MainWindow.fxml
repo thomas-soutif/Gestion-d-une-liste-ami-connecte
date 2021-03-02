@@ -14,13 +14,13 @@
             </HBox>
             <VBox prefHeight="139.0" prefWidth="600.0">
                <children>
-                  <Label text="Friend Request" />
+                  <Label style="-fx-background-color: Grey;" text="Friend Request" textFill="WHITE" />
                   <ListView fx:id="listViewFriendRequest" prefHeight="189.0" prefWidth="600.0" />
                </children>
             </VBox>
             <VBox prefHeight="263.0" prefWidth="600.0">
                <children>
-                  <Label prefHeight="17.0" prefWidth="599.0" text="Friend List" />
+                  <Label prefHeight="17.0" prefWidth="599.0" style="-fx-background-color: Grey;" text="Friend List" textFill="WHITE" />
                   <ListView fx:id="friendList" prefHeight="245.0" prefWidth="600.0" />
                </children>
             </VBox>
