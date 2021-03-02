@@ -3,7 +3,7 @@ package ihm;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
-public class InitWindowController {
+public class InitWindowSignUpController {
     // @FXML
     // private Button buttonSendRequest;
     //@FXML

@@ -16,7 +16,7 @@
       <AnchorPane prefHeight="91.0" prefWidth="589.0" style="-fx-background-color: Grey;" BorderPane.alignment="CENTER" />
    </bottom>
    <center>
-      <Button defaultButton="true" mnemonicParsing="false" prefHeight="43.0" prefWidth="191.0" text="S'inscrire" BorderPane.alignment="CENTER">
+      <Button fx:id="buttonSignUp" mnemonicParsing="false" prefHeight="43.0" prefWidth="191.0" text="S'inscrire" BorderPane.alignment="CENTER">
          <graphic>
             <ImageView fitHeight="29.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
                <image>
