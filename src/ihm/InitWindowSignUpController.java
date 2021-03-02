@@ -12,7 +12,7 @@ public class InitWindowSignUpController {
     //private Button buttonTestConnexionMichel;
 
      @FXML
-     private Button buttonConnection1;
+     private Button buttonSignUp;
 
     @FXML
     public void initialize() {

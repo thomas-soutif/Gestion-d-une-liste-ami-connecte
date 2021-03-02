@@ -33,7 +33,7 @@
    <top>
       <VBox alignment="BOTTOM_CENTER" BorderPane.alignment="CENTER">
          <children>
-            <Hyperlink text="Pas encore de compte ? Incrivez-vous" />
+            <Hyperlink fx:id="hyperLinkSignUp" text="Pas encore de compte ? Inscrivez-vous" />
             <Label prefHeight="88.0" prefWidth="102.0" text="Connexion" underline="true">
                <font>
                   <Font name="System Bold" size="19.0" />

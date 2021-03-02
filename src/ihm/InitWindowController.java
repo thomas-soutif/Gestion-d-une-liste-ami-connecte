@@ -42,12 +42,10 @@ public class InitWindowController {
         //SocketClient.sendPacketAsyncStatic(request);
     //}
 
-
     @FXML
     private void buttonConnection1(ActionEvent event) throws IOException {
-    //System.out.println("Bouton Michel");
-    //HandlerAuthClient.handlerUserConnexionRequest("michel","1234");
-    //Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
-    //InterfaceClient.getMainStage().setScene(new Scene(root));
-}
+    Parent root = FXMLLoader.load(getClass().getResource("InitWindowConnection.fxml"));
+    InterfaceClient.getMainStage().setScene(new Scene(root));
+
+    }
 }

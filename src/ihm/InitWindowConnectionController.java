@@ -12,7 +12,7 @@ public class InitWindowConnectionController {
     //private Button buttonTestConnexionMichel;
 
      @FXML
-     private Button buttonConnection1;
+     private Button buttonConnection2;
 
     @FXML
     public void initialize() {
@@ -49,5 +49,6 @@ public class InitWindowConnectionController {
     //HandlerAuthClient.handlerUserConnexionRequest("michel","1234");
     //Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
     //InterfaceClient.getMainStage().setScene(new Scene(root));
-}
+    }
+
 }
