@@ -50,4 +50,5 @@ public class FriendRequest {
                 ", date=" + date +
                 '}';
     }
+
 }

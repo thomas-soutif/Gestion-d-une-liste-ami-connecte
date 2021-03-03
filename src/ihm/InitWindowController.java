@@ -32,8 +32,8 @@ public class InitWindowController {
         System.out.println("Bouton Michel");
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("pseudo","Michel");
-            jsonObject.put("password","1234");
+            jsonObject.put("pseudo","Ace");
+            jsonObject.put("password","jadoreacejésouisunkikoo");
         } catch (JSONException e) {
             e.printStackTrace();
         }

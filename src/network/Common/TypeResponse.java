@@ -1,6 +1,7 @@
 package network.Common;
 
 import database.CLASSES.AccountUser;
+import ihm.AddAFriendModalController;
 import ihm.MainWindowController;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,8 +18,6 @@ public enum TypeResponse {
 
                     JSONObject jsonObject = new JSONObject(response.getContent());
                     System.out.println(jsonObject.toString());
-                    AccountUser user = (AccountUser) jsonObject.get("user");
-                    System.out.println(user.getId() + user.getFirstName() + user.getName() + user.getPseudo() + user.getPassword());
 
 
                 } catch (JSONException e) {
@@ -31,7 +30,37 @@ public enum TypeResponse {
     },
     INSCRIPTION,
     FRIEND_REQUEST,
-    FRIENDLIST,
+    FRIENDLIST{
+    },
+
+    USER_ADD_FRIEND_LIST{
+        @Override
+        public void ClientHandling(Response response) {
+            System.out.println("List Friend add");
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = new JSONObject(response.getContent());
+                AddAFriendModalController.getInstance().setFriendAddListOnUI(jsonObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    },
+    ADD_FRIEND_RESPONSE{
+        @Override
+        public void ClientHandling(Response response) {
+            System.out.println("List Friend Client Handling");
+            JSONObject jsonObject = null;
+            try {
+                System.out.println("try add response");
+                jsonObject = new JSONObject(response.getContent());
+                AddAFriendModalController.getInstance().setButtonAcceptIU(jsonObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    },
     ACCEPT_FRIEND_REQUEST,
     REFUSE_FRIEND_REQUEST,
     REMOVE_FRIEND,
