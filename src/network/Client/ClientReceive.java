@@ -4,6 +4,7 @@ import network.Common.Packet;
 import network.Common.Request;
 import network.Common.Response;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
@@ -24,6 +25,7 @@ public class ClientReceive implements Runnable {
             boolean isActive = true;
             while (isActive) {
                 Packet packet = (Packet) in.readObject();
+                System.out.println("READ OBJECT");
                 if (packet != null) {
                     if (packet.getTypePacket() == Packet.TypePacket.REQUEST)
                         ((Request) packet).getTypeRequest().ClientHandling((Request) packet);
@@ -35,8 +37,10 @@ public class ClientReceive implements Runnable {
                 }
             }
             client.disconnectedServer();
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 }

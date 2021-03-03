@@ -1,6 +1,8 @@
 package network.Common;
 
 import database.CLASSES.AccountUser;
+import ihm.AddAFriendModalController;
+import ihm.AddAFriendModalController;
 import ihm.MainWindowController;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -92,6 +94,34 @@ public enum TypeResponse {
             else{
                 //MainWindowController.getInstance().setUIAfterFriendRequestHasBeenAcceptedByServer(jsonObject);
                 //TODO: Ajouter si j'ai le temps un message d'erreur pour dire qu'il y'a eu un problème
+            }
+        }
+    },
+    USER_ADD_FRIEND_LIST{
+        @Override
+        public void ClientHandling(Response response) {
+            System.out.println("List Friend add");
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = new JSONObject(response.getContent());
+                AddAFriendModalController.getInstance().setFriendAddListOnUI(jsonObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    },
+    ADD_FRIEND_RESPONSE{
+        @Override
+        public void ClientHandling(Response response) {
+            System.out.println("List Friend Client Handling");
+            JSONObject jsonObject = null;
+            try {
+                System.out.println("try add response");
+                jsonObject = new JSONObject(response.getContent());
+                AddAFriendModalController.getInstance().setButtonAcceptIU(jsonObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
     },
