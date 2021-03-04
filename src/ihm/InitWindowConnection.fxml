@@ -12,16 +12,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihm.InitWindowController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihm.InitWindowConnectionController">
    <bottom>
       <AnchorPane prefHeight="91.0" prefWidth="589.0" style="-fx-background-color: Grey;" BorderPane.alignment="CENTER" />
    </bottom>
    <center>
-      <Button fx:id="buttonConnection2" mnemonicParsing="false" prefHeight="43.0" prefWidth="191.0" text="Se connecter" BorderPane.alignment="CENTER">
+      <Button fx:id="buttonToShowMainWindow" mnemonicParsing="false" onAction="#buttonToShowMainWindow"
+              prefHeight="43.0" prefWidth="191.0" text="Se connecter" BorderPane.alignment="CENTER">
          <graphic>
             <ImageView fitHeight="29.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../JAVA/images/logo_amis.png" />
+                  <Image url="/images/Logo_amis.png" />
                </image>
             </ImageView>
          </graphic>
@@ -33,7 +34,7 @@
    <top>
       <VBox alignment="BOTTOM_CENTER" BorderPane.alignment="CENTER">
          <children>
-            <Hyperlink fx:id="hyperLinkSignUp" text="Pas encore de compte ? Inscrivez-vous" />
+            <Hyperlink fx:id="hyperLinkToShowSignUp" onAction="#hyperLinkToShowSignUp" text="Pas encore de compte ? Inscrivez-vous" />
             <Label prefHeight="88.0" prefWidth="102.0" text="Connexion" underline="true">
                <font>
                   <Font name="System Bold" size="19.0" />

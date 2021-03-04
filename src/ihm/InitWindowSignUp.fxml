@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
@@ -11,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="615.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihm.InitWindowController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="615.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihm.InitWindowSignUpController">
    <bottom>
       <AnchorPane prefHeight="91.0" prefWidth="589.0" style="-fx-background-color: Grey;" BorderPane.alignment="CENTER" />
    </bottom>
@@ -20,7 +21,7 @@
          <graphic>
             <ImageView fitHeight="29.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../JAVA/images/logo_amis.png" />
+                  <Image url="/images/Logo_amis.png" />
                </image>
             </ImageView>
          </graphic>
@@ -32,6 +33,7 @@
    <top>
       <VBox alignment="BOTTOM_CENTER" BorderPane.alignment="CENTER">
          <children>
+            <Hyperlink fx:id="hyperLinkBackToConnectionhyperLinkBackToConnection" alignment="CENTER" onAction="#hyperLinkBackToConnection" prefHeight="34.0" prefWidth="261.0" text="Retour à la page de connexion" textAlignment="CENTER" />
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="88.0" prefWidth="157.0" text="Inscription" textAlignment="CENTER" underline="true">
                <font>
                   <Font name="System Bold" size="19.0" />

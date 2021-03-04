@@ -17,8 +17,8 @@ public class InitWindowController {
     //@FXML
     //private Button buttonTestConnexionMichel;
 
-     @FXML
-     private Button buttonConnection1;
+    @FXML
+    private Button buttonToShowConnectionPage;
 
     @FXML
     public void initialize() {
@@ -49,7 +49,7 @@ public class InitWindowController {
     //}
 
     @FXML
-    private void buttonConnection1(ActionEvent event) throws IOException {
+    public void buttonToShowConnectionPage(ActionEvent event) throws IOException {
     Parent root = FXMLLoader.load(getClass().getResource("InitWindowConnection.fxml"));
     InterfaceClient.getMainStage().setScene(new Scene(root));
 

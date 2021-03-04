@@ -2,6 +2,9 @@ package ihm;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
 import java.io.IOException;
@@ -14,8 +17,8 @@ public class InitWindowSignUpController {
     //@FXML
     //private Button buttonTestConnexionMichel;
 
-     @FXML
-     private Button buttonSignUp;
+    @FXML
+    private Button buttonSignUp;
 
     @FXML
     public void initialize() {
@@ -46,11 +49,15 @@ public class InitWindowSignUpController {
     //}
 
 
-    @FXML
-    private void buttonConnection1(ActionEvent event) throws IOException {
-    //System.out.println("Bouton Michel");
-    //HandlerAuthClient.handlerUserConnexionRequest("michel","1234");
-    //Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
-    //InterfaceClient.getMainStage().setScene(new Scene(root));
-}
+        @FXML
+        private void setButtonConnection2(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
+        InterfaceClient.getMainStage().setScene(new Scene(root));
+    }
+
+        @FXML
+        private void hyperLinkBackToConnection(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("InitWindowConnection.fxml"));
+        InterfaceClient.getMainStage().setScene(new Scene(root));
+    }
 }

@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ihm.InitWindowController">
    <bottom>
       <AnchorPane prefHeight="91.0" prefWidth="586.0" style="-fx-background-color: Grey;" BorderPane.alignment="CENTER" />
@@ -21,11 +20,11 @@
       </Label>
    </top>
    <center>
-      <Button fx:id="buttonConnection1" mnemonicParsing="false" prefHeight="43.0" prefWidth="191.0" text="Se connecter" BorderPane.alignment="CENTER">
+      <Button fx:id="buttonToShowConnectionPage" mnemonicParsing="false" onAction="#buttonToShowConnectionPage" prefHeight="43.0" prefWidth="191.0" text="Se connecter" BorderPane.alignment="CENTER">
          <graphic>
             <ImageView fitHeight="29.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../JAVA/images/logo_amis.png" />
+                  <Image url="/images/Logo_amis.png" />
                </image>
             </ImageView>
          </graphic>

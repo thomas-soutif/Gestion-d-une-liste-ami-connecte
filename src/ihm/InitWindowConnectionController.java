@@ -2,11 +2,15 @@ package ihm;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Hyperlink;
 
 import java.io.IOException;
 
 public class InitWindowConnectionController {
+    //public Hyperlink hyperLinkToShowSignUp;
     // @FXML
     // private Button buttonSendRequest;
     //@FXML
@@ -14,8 +18,11 @@ public class InitWindowConnectionController {
     //@FXML
     //private Button buttonTestConnexionMichel;
 
-     @FXML
-     private Button buttonConnection2;
+    @FXML
+    private Hyperlink hyperLinkToShowSignUp;
+
+    //@FXML
+    //private Button buttonToShowMainWindow;
 
     @FXML
     public void initialize() {
@@ -47,11 +54,14 @@ public class InitWindowConnectionController {
 
 
     @FXML
-    private void buttonConnection1(ActionEvent event) throws IOException {
-    //System.out.println("Bouton Michel");
-    //HandlerAuthClient.handlerUserConnexionRequest("michel","1234");
-    //Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
-    //InterfaceClient.getMainStage().setScene(new Scene(root));
+    private void hyperLinkToShowSignUp(ActionEvent event) throws IOException {
+    Parent root = FXMLLoader.load(getClass().getResource("InitWindowSignUp.fxml"));
+    InterfaceClient.getMainStage().setScene(new Scene(root));
     }
 
+    @FXML
+    private void buttonToShowMainWindow(ActionEvent event) throws IOException {
+    Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
+    InterfaceClient.getMainStage().setScene(new Scene(root));
+    }
 }
