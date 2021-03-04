@@ -31,14 +31,10 @@ public class Server {
         return clients;
     }
 
-    public void disconnectedClient(ConnectedClient discClient) throws IOException {
+    public static void disconnectedClient(ConnectedClient discClient) throws IOException {
         discClient.closeClient();
         clients.remove(discClient);
 
 
-    }
-
-    public static void removeClient(ConnectedClient client){
-        clients.remove(client);
     }
 }

@@ -10,7 +10,7 @@ public class FriendRelationTest {
 
     @Before
     public void setup() throws Exception{
-        // On va s'assurer que toute les données que l'on veut tester sont dans la base de données et correct -MHM A REFLECHIR CAR CA IMPLIQUE BEAUCOUP DE DONNES
+        // On va s'assurer que toute les données que l'on veut tester sont dans la base de données et correct
 //        FriendRelationDAO friendRelationDao = new FriendRelationDAO();
 //        FriendRelation relation1 =  friendRelationDao.getFriendRelationById(1);
 //        FriendRelation relation2 = friendRelationDao.getFriendRelationById(2);

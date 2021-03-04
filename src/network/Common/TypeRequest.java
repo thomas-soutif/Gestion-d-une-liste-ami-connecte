@@ -65,8 +65,8 @@ public enum TypeRequest {
                 if(jsonObjectReceived.getString("pseudo").equals("Jym")){
                     user.setPseudo("Jym");
                     user.setPassword("1234");
-                    user.setName("Jean Michel");
-                    user.setFirstName("Jean");
+                    user.setName("DOSSOU");
+                    user.setFirstName("Jean-Michel");
                     user.setId(8);
                 }else{
                     user.setPseudo("Xelèèèèèèèèèreeee");
