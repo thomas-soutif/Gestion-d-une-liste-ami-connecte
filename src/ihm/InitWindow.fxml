@@ -20,7 +20,7 @@
       </Label>
    </top>
    <center>
-      <Button fx:id="buttonConnection1" mnemonicParsing="false" onAction="#buttonToShowConnectionPage" prefHeight="43.0" prefWidth="191.0" text="Se connecter" BorderPane.alignment="CENTER">
+      <Button fx:id="buttonToShowConnectionPage" mnemonicParsing="false" onAction="#buttonToShowConnectionPage" prefHeight="43.0" prefWidth="191.0" text="Se connecter" BorderPane.alignment="CENTER">
          <graphic>
             <ImageView fitHeight="29.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
                <image>
