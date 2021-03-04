@@ -32,12 +32,10 @@ public class InterfaceClient extends Application {
         if (isConnected){
             try {
                 System.out.println("Connecté au serveur");
-                System.out.println("Test2");
                 Parent root = FXMLLoader.load(getClass().getResource("InitWindow.fxml"));
-                System.out.println("test 3");
                 Scene scene = new Scene(root);
                 primaryStage.getIcons().add(new Image("https://image.noelshack.com/fichiers/2015/19/1431246599-hap512.png"));
-                primaryStage.setTitle("Interface Test");
+                primaryStage.setTitle("Liste d'amis");
                 primaryStage.setScene(scene);
                 primaryStage.show();
                 mainStage = primaryStage;

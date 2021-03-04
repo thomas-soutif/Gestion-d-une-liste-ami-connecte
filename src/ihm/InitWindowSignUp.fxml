@@ -33,7 +33,7 @@
    <top>
       <VBox alignment="BOTTOM_CENTER" BorderPane.alignment="CENTER">
          <children>
-            <Hyperlink fx:id="hyperLinkBackToConnectionhyperLinkBackToConnection" alignment="CENTER" onAction="#hyperLinkBackToConnection" prefHeight="34.0" prefWidth="261.0" text="Retour à la page de connexion" textAlignment="CENTER" />
+            <Hyperlink fx:id="hyperLinkBackToConnection" alignment="CENTER" onAction="#hyperLinkBackToConnection" prefHeight="34.0" prefWidth="261.0" text="Retour à la page de connexion" textAlignment="CENTER" />
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="88.0" prefWidth="157.0" text="Inscription" textAlignment="CENTER" underline="true">
                <font>
                   <Font name="System Bold" size="19.0" />

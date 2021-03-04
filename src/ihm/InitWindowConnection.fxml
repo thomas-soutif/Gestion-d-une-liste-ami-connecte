@@ -17,8 +17,7 @@
       <AnchorPane prefHeight="91.0" prefWidth="589.0" style="-fx-background-color: Grey;" BorderPane.alignment="CENTER" />
    </bottom>
    <center>
-      <Button fx:id="buttonToShowMainWindow" mnemonicParsing="false" onAction="#buttonToShowMainWindow"
-              prefHeight="43.0" prefWidth="191.0" text="Se connecter" BorderPane.alignment="CENTER">
+      <Button fx:id="buttonToShowMainWindow" mnemonicParsing="false" onAction="#buttonToShowMainWindow" prefHeight="43.0" prefWidth="191.0" text="Se connecter" BorderPane.alignment="CENTER">
          <graphic>
             <ImageView fitHeight="29.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -40,7 +39,7 @@
                   <Font name="System Bold" size="19.0" />
                </font>
             </Label>
-            <TextField alignment="CENTER" prefHeight="27.0" prefWidth="473.0" promptText="Pseudo" />
+            <TextField fx:id="pseudoTextField" alignment="CENTER" prefHeight="27.0" prefWidth="473.0" promptText="Pseudo" />
             <PasswordField alignment="CENTER" prefHeight="27.0" prefWidth="340.0" promptText="Mot de passe" />
          </children>
       </VBox>

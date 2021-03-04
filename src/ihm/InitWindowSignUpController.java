@@ -6,58 +6,30 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 
 import java.io.IOException;
 
 public class InitWindowSignUpController {
-    // @FXML
-    // private Button buttonSendRequest;
-    //@FXML
-    //private Button buttonSendResponse;
-    //@FXML
-    //private Button buttonTestConnexionMichel;
 
+    public Hyperlink hyperLinkBackToConnection;
     @FXML
     private Button buttonSignUp;
 
     @FXML
     public void initialize() {
-
     }
 
-    //@FXML
-    //private void connexionMichel(ActionEvent event) throws IOException {
-        //System.out.println("Bouton Michel");
-        //HandlerAuthClient.handlerUserConnexionRequest("michel","1234");
-        //Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
-        //InterfaceClient.getMainStage().setScene(new Scene(root));
-    //}
-
-    //@FXML
-    //private void sendRequestTest(ActionEvent event){
-        //System.out.println("Bouton Test Request");
-        //Request request = new Request(TypeRequest.TOKEN_AUTHENTICATION);
-        //SocketClient.sendPacketAsyncStatic(request);
-        //buttonSendRequest.setText("Salut");
-    //}
-
-    //@FXML
-    //private void sendResponseTest(ActionEvent event){
-        //System.out.println("Bouton Test Response");
-        //Request request = new Request(TypeRequest.TOKEN_AUTHENTICATION);
-        //SocketClient.sendPacketAsyncStatic(request);
-    //}
-
-
-        @FXML
-        private void setButtonConnection2(ActionEvent event) throws IOException {
+    @FXML
+    private void setButtonConnection2(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
         InterfaceClient.getMainStage().setScene(new Scene(root));
     }
 
-        @FXML
-        private void hyperLinkBackToConnection(ActionEvent event) throws IOException {
+    @FXML
+    private void hyperLinkBackToConnection(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("InitWindowConnection.fxml"));
         InterfaceClient.getMainStage().setScene(new Scene(root));
     }
 }
+//TODO récupérer les valeurs des champs et confirmer les inscriptions!
