@@ -25,9 +25,10 @@ public class ConnectedClient implements Runnable {
 
     private AccountUser user;
 
-    public ConnectedClient(Server server, Socket socket) {
+    public ConnectedClient(Server server, Socket socket) throws SocketException {
         this.server = server;
         this.socket = socket;
+        this.socket.setKeepAlive(true);
         id = idCounter;
         idCounter++;
         try {
@@ -71,11 +72,12 @@ public class ConnectedClient implements Runnable {
                 }catch (SocketException e){
                     System.out.println(e);
                     isActive = false;
-                    this.closeClient();
+
                 }
 
 
             }
+            this.closeClient();
             System.out.println("Deconnexion du client d'id "+ id);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -92,8 +94,10 @@ public class ConnectedClient implements Runnable {
     }
 
     public void closeClient() throws IOException {
+        Server.removeClient(this);
         this.in.close();
         this.out.close();
+
         this.socket.close();
     }
 

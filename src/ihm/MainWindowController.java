@@ -133,13 +133,13 @@ public class MainWindowController {
         System.out.println(this.friendList.getItems());
         if (this.friendList.getItems().isEmpty() && !this.not_have_friend_list ){
             HBox hBox = new HBox();
-            Label label_name= new Label("Vous n'avez pas d'ami (c'est triste ceci dit)");
+            Label label_name= new Label("VOUS N'AVEZ PAS D'AMIS ");
             hBox.getChildren().add(label_name);
             this.friendList.getItems().add(hBox);
             this.not_have_friend_list = true;
             if(this.not_have_friend_request){
                 HBox hBox2 = new HBox();
-                hBox2.getChildren().add(new Label("Ah, vous n'avez pas non plus de reqûetes d'amis on dirait.. On est avec vous ! (bon m'enfin nous on est un système qui tourne avec Java hein, on est pas vraiment réel.. donc prend pas trop la confiance"));
+                hBox2.getChildren().add(new Label("Ah, vous n'avez pas non plus de reqûetes d'amis on dirait.."));
 
                 this.friendList.getItems().add(hBox2);
             }

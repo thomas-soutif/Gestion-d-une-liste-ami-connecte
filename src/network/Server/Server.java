@@ -7,7 +7,8 @@ import java.util.List;
 /**
  *
  */
-public class Server {private static List<ConnectedClient> clients;
+public class Server {
+    private static List<ConnectedClient> clients;
 
     private int port;
 
@@ -35,5 +36,9 @@ public class Server {private static List<ConnectedClient> clients;
         clients.remove(discClient);
 
 
+    }
+
+    public static void removeClient(ConnectedClient client){
+        clients.remove(client);
     }
 }
