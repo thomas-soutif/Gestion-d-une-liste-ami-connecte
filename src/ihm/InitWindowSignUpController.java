@@ -47,7 +47,8 @@ public class InitWindowSignUpController {
         String mdp = passwordFieldMdp.getText();
         if (textFieldPseudo.getText().isBlank()) {
             //TODO afficher message d'erreur
-            //TODO seconde condition, mettre un else if pour comparer si
+            //TODO seconde condition, mettre un else if mdp pas egale ou différents afficher message d'erreur
+            // Et terminer par un else récupérer les valeurs comme ci-dessous.
         }
        else if (mdpConfirmation.equals(mdp)){
             HandlerAuthClient.handlerUserInscriptionRequest(textFieldPseudo.getText(), mdp, textFieldPrenom.getText(), textFieldNom.getText());
