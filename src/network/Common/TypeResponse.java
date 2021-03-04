@@ -2,6 +2,8 @@ package network.Common;
 
 import database.CLASSES.AccountUser;
 import ihm.MainWindowController;
+import network.Client.Handler.HandlerAuthClient;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,26 +12,15 @@ public enum TypeResponse {
     TOKEN_AUTHENTICATION {
         @Override
         public void ClientHandling(Response response) {
-            if (response.getStatusResponse() == 200) {
-                try {
-                    System.out.println("changement du titre d'un des boutons en 'lien ui' pour tester ");
-                    MainWindowController.getInstance().testLinkUI();
-
-                    JSONObject jsonObject = new JSONObject(response.getContent());
-                    System.out.println(jsonObject.toString());
-                    AccountUser user = (AccountUser) jsonObject.get("user");
-                    System.out.println(user.getId() + user.getFirstName() + user.getName() + user.getPseudo() + user.getPassword());
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                System.out.println("Erreur lors de la connexion");
-            }
+            HandlerAuthClient.handlerUserConnexionResponse(response);
         }
     },
-    INSCRIPTION,
+    INSCRIPTION{
+        @Override
+        public void ClientHandling(Response response) {
+            HandlerAuthClient.handlerUserInscriptionResponse(response);
+        }
+    },
     FRIEND_REQUEST,
     FRIENDLIST,
     ACCEPT_FRIEND_REQUEST,

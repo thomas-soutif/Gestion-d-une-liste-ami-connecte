@@ -20,7 +20,7 @@ public interface DAO<T> {
      *
      * @param obj
      */
-    T insert(T obj) throws CustomException;
+    T insert(T obj) throws Exception;
 
     /**
      * Permet de mettre à jour les données d'un tuple dans la base à partir d'un

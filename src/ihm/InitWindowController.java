@@ -29,7 +29,7 @@ public class InitWindowController {
     @FXML
     private void connexionMichel(ActionEvent event) throws IOException {
         System.out.println("Bouton Michel");
-        HandlerAuthClient.handlerUserConnexionRequest("michel","1234");
+        HandlerAuthClient.handlerUserConnexionRequest("Free Couscous","123456");
         Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
         InterfaceClient.getMainStage().setScene(new Scene(root));
     }
@@ -37,8 +37,7 @@ public class InitWindowController {
     @FXML
     private void sendRequestTest(ActionEvent event){
         System.out.println("Bouton Test Request");
-        Request request = new Request(TypeRequest.TOKEN_AUTHENTICATION);
-        SocketClient.sendPacketAsyncStatic(request);
+        HandlerAuthClient.handlerUserInscriptionRequest("Binou","abc","Aub","G");
         buttonSendRequest.setText("Salut");
     }
 
