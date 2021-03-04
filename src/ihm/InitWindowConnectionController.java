@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
 
@@ -12,6 +13,7 @@ import java.io.IOException;
 
 public class InitWindowConnectionController {
     public TextField pseudoTextField;
+    public Button buttonToShowMainWindow;
     //public Hyperlink hyperLinkToShowSignUp;
     // @FXML
     // private Button buttonSendRequest;
