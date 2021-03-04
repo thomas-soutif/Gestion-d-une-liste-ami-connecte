@@ -1,7 +1,9 @@
 package network.Client.Handler;
 
+import database.CLASSES.AccountUser;
 import network.Client.SocketClient;
 import network.Common.Request;
+import network.Common.Response;
 import network.Common.TypeRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,6 +28,30 @@ public final class HandlerAuthClient {
     }
 
     /**
+     * @param response Reponse du serveur
+     */
+    public static void handlerUserConnexionResponse(Response response){
+        if (response.getStatusResponse() == 200) {
+            try {
+                JSONObject jsonObject = new JSONObject(response.getContent()).getJSONObject("user");
+                System.out.println(jsonObject);
+                AccountUser accountUser = new AccountUser();
+                accountUser.setPseudo(jsonObject.getString("pseudo"));
+                accountUser.setName(jsonObject.getString("name"));
+                accountUser.setFirstName(jsonObject.getString("firstName"));
+                SocketClient.setUser(accountUser);
+                //todo passer interface suivante
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Erreur lors de la connexion de l'utilisateur");
+            //todo Afficher message erreur
+        }
+    }
+
+    /**
      *
      * @param pseudo Pseudo de l'utilisateur
      * @param motDePasse Mot de passe de l'utilisateur
@@ -43,6 +69,24 @@ public final class HandlerAuthClient {
             SocketClient.sendPacketAsyncStatic(request);
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * @param response Reponse du serveur
+     */
+    public static void handlerUserInscriptionResponse(Response response){
+        if (response.getStatusResponse() == 200) {
+            try {
+                JSONObject jsonObject = new JSONObject(response.getContent()).getJSONObject("user");
+                System.out.println(jsonObject);
+                //todo afficher popup inscription reussi et passer connexion
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Erreur lors de l'inscription de l'utilisateur");
+            //todo Afficher message erreur
         }
     }
 

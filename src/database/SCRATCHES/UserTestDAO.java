@@ -1,3 +1,5 @@
+package database.SCRATCHES;
+
 import database.CLASSES.AccountUser;
 import database.DAO.UserDAO;
 import database.EXCEPTION.CustomException;
@@ -20,7 +22,7 @@ class UserTestDAO {
         try{
 
             dao.insert(user);
-        }catch (CustomException e){
+        }catch (Exception e){
             System.out.println(e);
             System.exit(1);
         }

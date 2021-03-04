@@ -22,7 +22,6 @@ public class UserDAO implements IUserDAO {
         try{
             Statement database_instance= conn.createStatement();
             ResultSet result = database_instance.executeQuery("SELECT * FROM account_user ORDER BY id");
-
             while(result.next()){
                 AccountUser account_user = new AccountUser();
 
@@ -70,6 +69,33 @@ public class UserDAO implements IUserDAO {
     }
 
     @Override
+    public AccountUser getAccountUser(String pseudo, String password) {
+        try {
+            String query1 = "SELECT * FROM account_user WHERE pseudo = ? and password = ?";
+
+
+            PreparedStatement preparedStatement1 =conn.prepareStatement(query1);
+            preparedStatement1.setString(1,pseudo);
+            preparedStatement1.setString(2,password);
+
+            ResultSet result = preparedStatement1.executeQuery();
+            while(result.next()) {
+                AccountUser account_user = new AccountUser();
+                account_user.setId(result.getInt("id"));
+                account_user.setFirstName(result.getString("firstname"));
+                account_user.setName(result.getString("name"));
+                account_user.setPseudo(result.getString("pseudo"));
+
+                return account_user;
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
     public boolean delete(AccountUser obj) {
         boolean ok = false;
         try{
@@ -91,7 +117,7 @@ public class UserDAO implements IUserDAO {
      *
      * */
     @Override
-    public AccountUser insert(AccountUser obj)  throws CustomException {
+    public AccountUser insert(AccountUser obj) throws Exception {
 
             try{
                 Statement database_instance = conn.createStatement();
@@ -115,12 +141,15 @@ public class UserDAO implements IUserDAO {
                         // Alors on récupère l'id de ce nouveau tuple inséré et le stocke dans l'objet avant de le renvoyer
                         obj.setId(generatedKeys.getInt(1));
                     }
+                }else {
+                    throw new Exception("");
                 }
 
             }catch (SQLException e){
 
                 System.out.println("Erreur UserDAO, insert");
-                System.out.println(e + "\n");
+                e.printStackTrace();
+                throw new Exception();
             }
 
             return obj;

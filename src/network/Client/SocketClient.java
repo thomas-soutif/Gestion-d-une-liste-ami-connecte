@@ -1,5 +1,6 @@
 package network.Client;
 
+import database.CLASSES.AccountUser;
 import network.Common.Packet;
 import network.Common.Request;
 import network.Common.TypeRequest;
@@ -11,6 +12,7 @@ import java.net.Socket;
 
 public class SocketClient {
     private static SocketClient socketClient;
+    private static AccountUser user;
 
     private String address;
     private int port;
@@ -89,5 +91,13 @@ public class SocketClient {
         socket.close();
         if (in != null)
             in.close();
+    }
+
+    public static AccountUser getUser() {
+        return user;
+    }
+
+    public static void setUser(AccountUser user) {
+        SocketClient.user = user;
     }
 }
