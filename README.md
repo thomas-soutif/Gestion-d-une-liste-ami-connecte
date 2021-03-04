@@ -11,7 +11,7 @@ Password : 2fmjWLrf@YjVKBt
 Dans le package database.EXCEPTIONS se trouve les classes personnalisés qui héritent de Exception. Pour ajouter un type d'erreur à gérer, il faut ajouter l'enum dans ErrorType. Les autres fichiers n'ont pas besoin d'être modifier. Voici un example de bonne utilisation de cette gestion d'erreur dans le code :
 
 ```
-// Le fihier où l'on va lever l'exception personnalisée
+// Le fichier où l'on va lever l'exception personnalisée
 
 public FriendRelation insert(FriendRelation obj) throws SQLException, CustomException {
         
