@@ -46,6 +46,7 @@
                            <VBox.margin>
                               <Insets bottom="2.0" top="2.0" />
                            </VBox.margin></Button>
+                        <Button fx:id="buttonTestConnexionThomas" mnemonicParsing="false" onAction="#connexionThomas" text="Connexion Thomas" />
                      </children>
                   </VBox>
                </children></AnchorPane>

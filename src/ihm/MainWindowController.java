@@ -17,6 +17,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import network.Client.SocketClient;
 import network.Common.Request;
+import network.Common.Response;
 import network.Common.TypeRequest;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -32,6 +33,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public class MainWindowController {
 
     private static MainWindowController instance;
+    @FXML
+    public Label pseudoLabel;
     @FXML
     private ListView listViewFriendRequest;
     @FXML
@@ -52,12 +55,14 @@ public class MainWindowController {
         JSONObject jsonObject = new JSONObject();
         System.out.println("Demande de la liste d'ami");
         Request request2 = new Request(TypeRequest.FRIEND_REQUEST_LIST,jsonObject);
-        SocketClient.sendPacketAsyncStatic(request2);
+        SocketClient.sendPacketStatic(request2);
         this.friendList.getItems().add(new Label("Récupération de la liste de vos amis ..."));
         Request request = new Request(TypeRequest.FRIENDLIST, jsonObject);
         //SocketClient.sendPacketAsyncStatic(request);
         SocketClient.sendPacketStatic(request);
 
+        Request request3 = new Request(TypeRequest.GET_USER_INFO_FOR_MAIN_WINDOWS,new JSONObject());
+        SocketClient.sendPacketStatic(request3);
 
     }
 
@@ -78,7 +83,6 @@ public class MainWindowController {
         Platform.runLater(() -> addAFriendButton.setText("Lien UI"));
     }
 
-
     public void setFriendListOnUI(JSONObject object){
         Platform.runLater(() -> {
             System.out.println("Ajout de la liste d'ami");
@@ -92,6 +96,7 @@ public class MainWindowController {
 
     }
 
+
     public void addFriendsOnListOnUI(JSONObject object){
 
         JSONArray list_user = object.getJSONArray("list");
@@ -104,7 +109,7 @@ public class MainWindowController {
             this.not_have_friend_list = false;
             JSONObject user = (JSONObject) user_object;
             HBox hBox = new HBox();
-            Label label_name= new Label(user.getString("firstName") + " " + user.getString("name"));
+            Label label_name= new Label(user.getString("firstname") + " " + user.getString("name"));
             label_name.getProperties();
             Button button_remove_friend = new Button("Remove");
             button_remove_friend.getProperties().put("friend_relation_id",user.getInt("friend_relation_id"));
@@ -200,6 +205,87 @@ public class MainWindowController {
 
         });
 
+    }
+
+    public void setPseudoOnWindowsUi(JSONObject jsonObject){
+        Platform.runLater(() -> {
+            System.out.println("=set pseudo");
+            this.pseudoLabel.setText(jsonObject.getString("pseudo"));
+            
+        });
+    }
+
+    public void addOneFriendRelationOnUi(JSONObject jsonObject){
+        Platform.runLater(()->{
+
+            if(this.not_have_friend_list){
+                this.friendList.getItems().removeAll(this.friendList.getItems());
+            }
+
+            HBox hBox = new HBox();
+            Label label_name= new Label(jsonObject.getString("firstname") + " " + jsonObject.getString("name"));
+            label_name.getProperties();
+            Button button_remove_friend = new Button("Remove");
+            button_remove_friend.getProperties().put("friend_relation_id",jsonObject.getInt("friend_relation_id"));
+            button_remove_friend.setMaxHeight(70);
+            hBox.getChildren().add(label_name);
+            hBox.getChildren().add(button_remove_friend);
+
+            this.friendList.getItems().add(hBox);
+
+            button_remove_friend.setOnAction((ActionEvent event) ->{
+                Button button = (Button) event.getSource();
+                Object object_user_id= button.getProperties().get("friend_relation_id");
+                int user_id = (int) object_user_id;
+                JSONObject jsonObject2 = new JSONObject();
+                jsonObject2.put("friend_relation_id",user_id);
+                SocketClient.sendPacketAsyncStatic(new Request(TypeRequest.REMOVE_FRIEND,jsonObject2));
+            });
+
+        });
+    }
+
+    public void addFriendRequestOnUi(JSONObject jsonObject) {
+        Platform.runLater(() -> {
+
+            if (this.not_have_friend_request){
+                this.listViewFriendRequest.getItems().removeAll(this.listViewFriendRequest.getItems());
+            }
+
+            Button button_accept = new Button("Accept");
+            Button button_refuse = new Button("Refuse");
+            button_accept.getProperties().put("idFriendRequest", jsonObject.getInt("request_id"));
+            button_refuse.getProperties().put("idFriendRequest", jsonObject.getInt("request_id"));
+
+            HBox hBox = new HBox();
+            Label label_name = new Label(jsonObject.getString("firstname") + " " + jsonObject.getString("name"));
+            hBox.getChildren().add(label_name);
+            hBox.getChildren().add(button_accept);
+            hBox.getChildren().add(button_refuse);
+
+            this.listViewFriendRequest.getItems().add(hBox);
+
+            button_accept.setOnAction((ActionEvent event) -> {
+                Button button = (Button) event.getSource();
+                System.out.println(button.getProperties());
+                Object object_friend_request_id = button.getProperties().get("idFriendRequest");
+                int friend_request_id = (int) object_friend_request_id;
+                JSONObject jsonObject2 = new JSONObject();
+                jsonObject2.put("friend_request_id", friend_request_id);
+                SocketClient.sendPacketAsyncStatic(new Request(TypeRequest.ACCEPT_FRIEND_REQUEST, jsonObject2));
+            });
+
+            button_refuse.setOnAction((ActionEvent event) -> {
+                Button button = (Button) event.getSource();
+                System.out.println(button.getProperties());
+                Object object_friend_request_id = button.getProperties().get("idFriendRequest");
+                int friend_request_id = (int) object_friend_request_id;
+                JSONObject jsonObject2 = new JSONObject();
+                jsonObject2.put("friend_request_id", friend_request_id);
+                SocketClient.sendPacketAsyncStatic(new Request(TypeRequest.REFUSE_FRIEND_REQUEST, jsonObject2));
+            });
+
+        });
     }
 
     public void setUIAfterFriendRequestHasBeenAcceptedByServer(JSONObject object){

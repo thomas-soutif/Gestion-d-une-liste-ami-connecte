@@ -7,9 +7,9 @@ import java.util.List;
 /**
  *
  */
-public class Server {
+public class Server {private static List<ConnectedClient> clients;
+
     private int port;
-    private List<ConnectedClient> clients;
 
     public Server(int port){
         this.port = port;
@@ -26,8 +26,14 @@ public class Server {
         clients.add(newClient);
     }
 
+    public static List<ConnectedClient> getClients() {
+        return clients;
+    }
+
     public void disconnectedClient(ConnectedClient discClient) throws IOException {
         discClient.closeClient();
         clients.remove(discClient);
+
+
     }
 }

@@ -13,6 +13,8 @@ import database.DAO.FriendRequestDAO;
 import database.DAO.UserDAO;
 import database.EXCEPTION.CustomException;
 import ihm.MainWindowController;
+import network.Server.ConnectedClient;
+import network.Server.Server;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,7 +31,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum TypeRequest {
-    NONE,
+    GET_USER_INFO_FOR_MAIN_WINDOWS{
+        @Override
+        public void ServerHandling(Request request) {
+            System.out.println("receive get user info");
+            AccountUser user = request.getSender().getUser();
+            if (user == null){
+                // L'utilisateur n'est pas authentifié, on lui refuse la demande
+                Response response = new Response(TypeResponse.GET_USER_INFO_FOR_MAIN_WINDOWS, 401);
+                request.getSender().sendPacket(response);
+                return;
+            }
+            //Alors la thread lié à cet utilisateur existe, et il est connecté, donc on lui renvoie ses informations
+            System.out.println("get user ok");
+            JSONObject customObject = new JSONObject();
+            customObject.put("pseudo",user.getPseudo());
+            Response response = new Response(TypeResponse.GET_USER_INFO_FOR_MAIN_WINDOWS, 200, customObject);
+            request.getSender().sendPacket(response);
+        }
+    },
     TOKEN_AUTHENTICATION {
         @Override
         public void ServerHandling(Request request) {
@@ -42,11 +62,33 @@ public enum TypeRequest {
                 //if exist TODO liens base donnée et traitement erreur
                 JSONObject jsonObjectResponse = new JSONObject();
                 AccountUser user = new AccountUser();
-                user.setPseudo("Xelèèèèèèèèèreeee");
-                user.setPassword("jemappelleThomas");
-                user.setFirstName("Thomas");
-                user.setName("Soutif");
-                user.setId(6);
+                if(jsonObjectReceived.getString("pseudo").equals("Jym")){
+                    user.setPseudo("Jym");
+                    user.setPassword("1234");
+                    user.setName("Jean Michel");
+                    user.setFirstName("Jean");
+                    user.setId(8);
+                }else{
+                    user.setPseudo("Xelèèèèèèèèèreeee");
+                    user.setPassword("jemappelleThomas");
+                    user.setFirstName("Thomas");
+                    user.setName("Soutif");
+                    user.setId(6);
+                }
+//                user.setPseudo("Xelèèèèèèèèèreeee");
+//                user.setPassword("jemappelleThomas");
+//                user.setFirstName("Thomas");
+//                user.setName("Soutif");
+//                user.setId(6);
+//                user.setId(9);
+//                user.setPseudo("Ace");
+//                user.setPassword("jadoreacejésouisunkikoo");
+//                user.setFirstName("Fabien");
+//                user.setName("Soles");
+
+//                    user.setPseudo("Jym");
+//                    user.setPassword("1234");
+//                    user.setId(8);
                 jsonObjectResponse.put("user", new JSONObject(user));
                 System.out.println(jsonObjectResponse);
                 request.getSender().setUser(user);
@@ -88,13 +130,13 @@ public enum TypeRequest {
                 for (FriendRelation friend_relation : list_friend_relation) {
                     JSONObject customObject = new JSONObject();
                     if (friend_relation.getFirstUser().getId() != user.getId()) {
-                        customObject.put("firstName",friend_relation.getFirstUser().getFirstName());
+                        customObject.put("firstname",friend_relation.getFirstUser().getFirstName());
                         customObject.put("name",friend_relation.getFirstUser().getName());
                         customObject.put("pseudo",friend_relation.getFirstUser().getPseudo());
                         customObject.put("friend_relation_id",friend_relation.getId());
                         list_user.add(customObject);
                     } else if (friend_relation.getSecondUser().getId() != user.getId()) {
-                        customObject.put("firstName",friend_relation.getSecondUser().getFirstName());
+                        customObject.put("firstname",friend_relation.getSecondUser().getFirstName());
                         customObject.put("name",friend_relation.getSecondUser().getName());
                         customObject.put("pseudo",friend_relation.getSecondUser().getPseudo());
                         customObject.put("friend_relation_id",friend_relation.getId());
@@ -158,7 +200,7 @@ public enum TypeRequest {
 
         }
     },
-    ACCEPT_FRIEND_REQUEST{
+    ACCEPT_FRIEND_REQUEST   {
         @Override
         public void ServerHandling(Request request) {
 
@@ -181,19 +223,37 @@ public enum TypeRequest {
             FriendRelation friend_relation = new FriendRelation();
             friend_relation.setFirstUser(userWhoAskedForTheFriendRelation);
             friend_relation.setSecondUser(user);
-            jsonObject.put("firstName",userWhoAskedForTheFriendRelation.getFirstName()).put("pseudo", userWhoAskedForTheFriendRelation.getPseudo()).put(
+            jsonObject.put("firstname",userWhoAskedForTheFriendRelation.getFirstName()).put("pseudo", userWhoAskedForTheFriendRelation.getPseudo()).put(
                     "name",userWhoAskedForTheFriendRelation.getName()).put("id",userWhoAskedForTheFriendRelation.getId());
             try {
                 friendRelationDao.insert(friend_relation);
                 // If everything is ok
                 jsonObject.put("friend_relation_id",friend_relation.getId());
-                Response response = new Response(TypeResponse.ACCEPT_FRIEND_REQUEST, 200, jsonObject);
                 // On doit supprimer la friend request de la base de données
                 friendRequestDao.delete(friend_request);
+
+                //Mise à jour de l'interface de l'ami accepté si il est connecté
+
+                List<ConnectedClient> connectedClient =Server.getClients();
+
+                for(ConnectedClient client : connectedClient){
+                    if(client.getUser() != null && client.getUser().getId() == userWhoAskedForTheFriendRelation.getId()){
+                        JSONObject customObject = new JSONObject();
+                        customObject.put("firstname",user.getFirstName());
+                        customObject.put("name",user.getName());
+                        customObject.put("pseudo",user.getPseudo());
+                        customObject.put("friend_relation_id",friend_relation.getId());
+                        Response response = new Response(TypeResponse.ADD_ONE_FRIEND_RELATION,201,customObject);
+                        client.sendPacket(response);
+                        break;
+                    }
+                }
+                Response response = new Response(TypeResponse.ACCEPT_FRIEND_REQUEST, 200, jsonObject);
                 request.getSender().sendPacket(response);
             } catch (CustomException | SQLException e){
                 System.out.println(e);
                 // An error occurs
+
                 Response response = new Response(TypeResponse.ACCEPT_FRIEND_REQUEST, 500, jsonObject);
                 request.getSender().sendPacket(response);
             }
@@ -237,13 +297,60 @@ public enum TypeRequest {
             JSONObject jsonObject = new JSONObject(request.getContent());
             int friend_relation_id = jsonObject.getInt("friend_relation_id");
             FriendRelation relation = friendRelationDAO.getFriendRelationById(friend_relation_id);
+            // Si jamais on a relation = null, ça veut dire la relation n'existe plus en base de données, vérifier si le utilisateur est connecté
+            if(relation == null){
+
+                List<ConnectedClient> connectedClient =Server.getClients();
+                for(ConnectedClient client : connectedClient){
+
+                    if(client.getUser() != null && client.getUser().getId() == request.getSender().getUser().getId() ){
+                        JSONObject customObject = new JSONObject();
+                        customObject.put("friend_relation_id",friend_relation_id);
+                        Response response = new Response(TypeResponse.REMOVE_ONE_FRIEND_RELATION,204,customObject);
+                        client.sendPacket(response);
+                        break;
+                    }
+                }
+
+                Response response = new Response(TypeResponse.REMOVE_FRIEND, 500, jsonObject);
+                request.getSender().sendPacket(response);
+                return;
+            }
+
+
+
             try{
                 friendRelationDAO.delete(relation);
+                AccountUser userToSend = new AccountUser();
+
+                if(relation.getFirstUser().getId() == request.getSender().getUser().getId()){
+                    userToSend = relation.getSecondUser();
+                }else if(relation.getSecondUser().getId() == request.getSender().getUser().getId()){
+                    userToSend = relation.getFirstUser();
+                }
+
+
+                //Une fois supprimé, on vérifie si l'ami en lien est connecté pour lui faire mettre à jour son ui
+                List<ConnectedClient> connectedClient =Server.getClients();
+                for(ConnectedClient client : connectedClient){
+
+                    if(client.getUser() != null && userToSend != null && client.getUser().getId() == userToSend.getId() ){
+                        JSONObject customObject = new JSONObject();
+                        customObject.put("friend_relation_id",friend_relation_id);
+                        Response response = new Response(TypeResponse.REMOVE_ONE_FRIEND_RELATION,204,customObject);
+                        client.sendPacket(response);
+                        break;
+                    }
+                }
+
+
+
                 Response response = new Response(TypeResponse.REMOVE_FRIEND, 200, jsonObject);
                 request.getSender().sendPacket(response);
 
             } catch (Exception e) {
                 System.out.println(e);
+
                 Response response = new Response(TypeResponse.REMOVE_FRIEND, 500, jsonObject);
             }
         }
@@ -318,6 +425,20 @@ public enum TypeRequest {
             try {
                 System.out.println("try insert friend");
                 friendRequestDao.insert(friend_request);
+                // On va envoyer une reqûete au client concerné par cette demande pour afficher dans ses requêtes d'amis (si seulement il est connecté)
+                List<ConnectedClient> connectedClient =Server.getClients();
+                for(ConnectedClient client : connectedClient){
+                    if(client.getUser() != null && client.getUser().getId() == user2.getId()){
+                        JSONObject customObject = new JSONObject();
+                        customObject.put("firstname",user1.getFirstName());
+                        customObject.put("name",user1.getName());
+                        customObject.put("pseudo",user1.getPseudo());
+                        customObject.put("request_id",friend_request.getId());
+                        Response response = new Response(TypeResponse.ADD_ONE_FRIEND_REQUEST,201,customObject);
+                        client.sendPacket(response);
+                        break;
+                    }
+                }
                 Response response = new Response(TypeResponse.ADD_FRIEND_RESPONSE, 200, jsonObject);
                 request.getSender().sendPacket(response);
             } catch (CustomException e) {

@@ -8,7 +8,36 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public enum TypeResponse {
-    NONE,
+    GET_USER_INFO_FOR_MAIN_WINDOWS{
+        @Override
+        public void ClientHandling(Response response) {
+
+            if(response.getStatusResponse() == 401){
+                // Refusé car non authentifié, on ne fait rien
+
+            }else if(response.getStatusResponse() == 200){
+                System.out.println("set pseudo before");
+                MainWindowController.getInstance().setPseudoOnWindowsUi(new JSONObject(response.getContent()));
+            }
+        }
+    },
+    REMOVE_ONE_FRIEND_RELATION{
+        @Override
+        public void ClientHandling(Response response) {
+            if(response.getStatusResponse() == 204){
+                MainWindowController.getInstance().setUIAfterFriendRemove(new JSONObject(response.getContent()));
+            }
+        }
+    },
+    ADD_ONE_FRIEND_RELATION{
+        @Override
+        public void ClientHandling(Response response) {
+
+            if(response.getStatusResponse() == 201){
+                MainWindowController.getInstance().addOneFriendRelationOnUi(new JSONObject(response.getContent()));
+            }
+        }
+    },
     TOKEN_AUTHENTICATION {
         @Override
         public void ClientHandling(Response response) {
@@ -123,6 +152,16 @@ public enum TypeResponse {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+    },
+    ADD_ONE_FRIEND_REQUEST{
+        @Override
+        public void ClientHandling(Response response){
+            JSONObject jsonObject = new JSONObject(response.getContent());
+            if(response.getStatusResponse() == 201){
+                MainWindowController.getInstance().addFriendRequestOnUi(jsonObject);
+            }
+
         }
     },
     CONNECTED_FRIEND,

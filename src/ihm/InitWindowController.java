@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 public class InitWindowController {
+    public Button buttonTestConnexionThomas;
     @FXML
     private Button buttonSendRequest;
     @FXML
@@ -32,8 +33,8 @@ public class InitWindowController {
         System.out.println("Bouton Michel");
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("pseudo","Xelèèèèèèèèèreeee");
-            jsonObject.put("password","jemappelleThomas");
+            jsonObject.put("pseudo","Jym");
+            jsonObject.put("password","1234");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -54,8 +55,21 @@ public class InitWindowController {
 
     @FXML
     private void sendResponseTest(ActionEvent event){
-        System.out.println("Bouton Test Response");
-        Request request = new Request(TypeRequest.TOKEN_AUTHENTICATION);
+        
+    }
+
+    public void connexionThomas(ActionEvent actionEvent) throws IOException {
+        System.out.println("Thomas");
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("pseudo","Xelèèèèèèèèèreeee");
+            jsonObject.put("password","jemappelleThomas");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Request request = new Request(TypeRequest.TOKEN_AUTHENTICATION, jsonObject);
         SocketClient.sendPacketAsyncStatic(request);
+        Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
+        InterfaceClient.getMainStage().setScene(new Scene(root));
     }
 }

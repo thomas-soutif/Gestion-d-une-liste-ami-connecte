@@ -70,12 +70,8 @@ public class ConnectedClient implements Runnable {
                     }
                 }catch (SocketException e){
                     System.out.println(e);
-                    if(e.getMessage().equals("Connection reset")){
-
-                        isActive = false;
-                    }else{
-                        System.exit(1);
-                    }
+                    isActive = false;
+                    this.closeClient();
                 }
 
 
