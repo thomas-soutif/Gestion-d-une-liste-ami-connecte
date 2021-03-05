@@ -237,6 +237,7 @@ public class MainWindowController {
             hBox.getChildren().add(button_remove_friend);
 
             this.friendList.getItems().add(hBox);
+            this.not_have_friend_list = false;
 
             button_remove_friend.setOnAction((ActionEvent event) ->{
                 Button button = (Button) event.getSource();
@@ -269,6 +270,7 @@ public class MainWindowController {
             hBox.getChildren().add(button_refuse);
 
             this.listViewFriendRequest.getItems().add(hBox);
+            this.not_have_friend_request = false;
 
             button_accept.setOnAction((ActionEvent event) -> {
                 Button button = (Button) event.getSource();
