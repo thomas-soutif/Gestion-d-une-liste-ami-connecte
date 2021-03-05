@@ -10,12 +10,6 @@ import javafx.scene.control.Button;
 import java.io.IOException;
 
 public class InitWindowController {
-    // @FXML
-    // private Button buttonSendRequest;
-    //@FXML
-    //private Button buttonSendResponse;
-    //@FXML
-    //private Button buttonTestConnexionMichel;
 
     @FXML
     private Button buttonToShowConnectionPage;
@@ -24,29 +18,6 @@ public class InitWindowController {
     public void initialize() {
 
     }
-
-    //@FXML
-    //private void connexionMichel(ActionEvent event) throws IOException {
-        //System.out.println("Bouton Michel");
-        //HandlerAuthClient.handlerUserConnexionRequest("michel","1234");
-        //Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
-        //InterfaceClient.getMainStage().setScene(new Scene(root));
-    //}
-
-    //@FXML
-    //private void sendRequestTest(ActionEvent event){
-        //System.out.println("Bouton Test Request");
-        //Request request = new Request(TypeRequest.TOKEN_AUTHENTICATION);
-        //SocketClient.sendPacketAsyncStatic(request);
-        //buttonSendRequest.setText("Salut");
-    //}
-
-    //@FXML
-    //private void sendResponseTest(ActionEvent event){
-        //System.out.println("Bouton Test Response");
-        //Request request = new Request(TypeRequest.TOKEN_AUTHENTICATION);
-        //SocketClient.sendPacketAsyncStatic(request);
-    //}
 
     @FXML
     public void buttonToShowConnectionPage(ActionEvent event) throws IOException {

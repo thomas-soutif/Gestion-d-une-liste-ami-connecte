@@ -1,6 +1,10 @@
 package network.Client.Handler;
 
 import database.CLASSES.AccountUser;
+import ihm.InitWindowConnectionController;
+import ihm.InitWindowSignUpController;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import network.Client.SocketClient;
 import network.Common.Request;
 import network.Common.Response;
@@ -40,14 +44,28 @@ public final class HandlerAuthClient {
                 accountUser.setName(jsonObject.getString("name"));
                 accountUser.setFirstName(jsonObject.getString("firstName"));
                 SocketClient.setUser(accountUser);
-                //todo passer interface suivante
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        InitWindowConnectionController.getInstance().gotoMainWindowInterface();
+                    }
+                });
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         } else {
             System.out.println("Erreur lors de la connexion de l'utilisateur");
-            //todo Afficher message erreur
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Connexion refusée");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Une erreur lors de la connexion est survenue!");
+                    alert.show();
+                }
+            });
         }
     }
 
@@ -77,16 +95,36 @@ public final class HandlerAuthClient {
      */
     public static void handlerUserInscriptionResponse(Response response){
         if (response.getStatusResponse() == 200) {
+
             try {
                 JSONObject jsonObject = new JSONObject(response.getContent()).getJSONObject("user");
                 System.out.println(jsonObject);
-                //todo afficher popup inscription reussi et passer connexion
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Inscription réussie");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Vous êtes dorénavant inscrit à l'application Liste d'Amis !");
+                        alert.show();
+                        InitWindowSignUpController.getInstance().gotoPageConnection();
+                    }
+                });
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         } else {
             System.out.println("Erreur lors de l'inscription de l'utilisateur");
-            //todo Afficher message erreur
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Echec de l'inscription");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Une erreur lors de l'inscription est survenue!");
+                    alert.show();
+                }
+            });
         }
     }
 
