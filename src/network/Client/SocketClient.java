@@ -24,6 +24,7 @@ public class SocketClient {
         this.address = address;
         this.port = port;
         socket = new Socket(address, port);
+        socket.setKeepAlive(true);
         out = new ObjectOutputStream(socket.getOutputStream());
         Thread threadClientR = new Thread(new ClientReceive(this, socket));
         threadClientR.start();

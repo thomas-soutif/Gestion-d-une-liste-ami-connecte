@@ -22,6 +22,7 @@ public class UserDAO implements IUserDAO {
         try{
             Statement database_instance= conn.createStatement();
             ResultSet result = database_instance.executeQuery("SELECT * FROM account_user ORDER BY id");
+
             while(result.next()){
                 AccountUser account_user = new AccountUser();
 
@@ -117,7 +118,7 @@ public class UserDAO implements IUserDAO {
      *
      * */
     @Override
-    public AccountUser insert(AccountUser obj) throws Exception {
+    public AccountUser insert(AccountUser obj)  throws CustomException {
 
             try{
                 Statement database_instance = conn.createStatement();
@@ -141,15 +142,12 @@ public class UserDAO implements IUserDAO {
                         // Alors on récupère l'id de ce nouveau tuple inséré et le stocke dans l'objet avant de le renvoyer
                         obj.setId(generatedKeys.getInt(1));
                     }
-                }else {
-                    throw new Exception("");
                 }
 
             }catch (SQLException e){
 
                 System.out.println("Erreur UserDAO, insert");
-                e.printStackTrace();
-                throw new Exception();
+                System.out.println(e + "\n");
             }
 
             return obj;
@@ -175,5 +173,27 @@ public class UserDAO implements IUserDAO {
 
 
         return ok;
+    }
+
+    public AccountUser getUserById(int userID){
+
+        AccountUser account_user = new AccountUser();
+        try{
+            Statement database_instance= conn.createStatement();
+            ResultSet result = database_instance.executeQuery("SELECT * FROM account_user where id = " + userID);
+            while (result.next()) {
+                account_user.setId(result.getInt("id"));
+                account_user.setFirstName(result.getString("firstname"));
+                account_user.setName(result.getString("name"));
+                account_user.setPseudo(result.getString("pseudo"));
+                account_user.setPassword(result.getString("password"));
+
+                return account_user;
+            }
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+
+        return  null;
     }
 }

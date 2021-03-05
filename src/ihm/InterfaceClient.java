@@ -43,6 +43,7 @@ public class InterfaceClient extends Application {
                 mainStage = primaryStage;
             } catch (IOException e) {
                 e.printStackTrace();
+                System.out.println(e);
             }
         }
         else {

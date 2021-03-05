@@ -51,4 +51,9 @@ public class FriendRelation {
                 ", date=" + date +
                 '}';
     }
+
+    public boolean IsInRelation(int userId)
+    {
+        return firstUser.getId() == userId || secondUser.getId() == userId;
+    }
 }

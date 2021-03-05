@@ -11,9 +11,18 @@
    <children>
       <VBox prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox prefHeight="61.0" prefWidth="600.0">
+            <HBox prefHeight="62.0" prefWidth="600.0">
                <children>
-                  <Button fx:id="addAFriendButton" mnemonicParsing="false" onAction="#addAFriend" text="Add a friend" />
+                  <HBox alignment="CENTER" prefHeight="41.0" prefWidth="369.0">
+                     <children>
+                        <Button fx:id="addAFriendButton" mnemonicParsing="false" onAction="#addAFriend" text="Add a friend" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="41.0" prefWidth="280.0">
+                     <children>
+                        <Label fx:id="pseudoLabel" alignment="BOTTOM_LEFT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="228.0" style="-fx-font-size: 20;" text="Label" />
+                     </children>
+                  </HBox>
                </children>
             </HBox>
             <VBox prefHeight="139.0" prefWidth="600.0">

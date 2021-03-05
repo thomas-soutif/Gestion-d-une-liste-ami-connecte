@@ -25,16 +25,22 @@ public class ClientReceive implements Runnable {
             boolean isActive = true;
             while (isActive) {
                 Packet packet = (Packet) in.readObject();
+                System.out.println("READ OBJECT");
                 if (packet != null) {
                     if (packet.getTypePacket() == Packet.TypePacket.REQUEST)
                         ((Request) packet).getTypeRequest().ClientHandling((Request) packet);
-                    else if (packet.getTypePacket() == Packet.TypePacket.RESPONSE)
+                    else if (packet.getTypePacket() == Packet.TypePacket.RESPONSE){
+                        System.out.println("Client receive packet type response");
                         ((Response) packet).getTypeResponse().ClientHandling((Response) packet);
+                    }
+
                 }
             }
             client.disconnectedServer();
-        } catch (IOException | ClassNotFoundException ex) {
-            System.out.println(ex.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 }

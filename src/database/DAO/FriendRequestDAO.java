@@ -17,7 +17,37 @@ public class FriendRequestDAO implements IFriendRequestDAO{
 
 
     @Override
-    public boolean delete(FriendRequest obj) {
+    public FriendRequest getFriendRequestById(int id) {
+        try {
+            Statement database_instance = conn.createStatement();
+            String query = "SELECT * FROM friend_request WHERE id =" + id;
+            ResultSet result = database_instance.executeQuery(query);
+            UserDAO userDao = new UserDAO();
+            while (result.next()){
+                FriendRequest friendRequest = new FriendRequest();
+                AccountUser from_user = userDao.getAccountOfUser(result.getInt("from_user"));
+                AccountUser to_user = userDao.getAccountOfUser(result.getInt("to_user"));
+                friendRequest.setTo_user(to_user);
+                friendRequest.setFrom_user(from_user);
+                friendRequest.setId(result.getInt("id"));
+                friendRequest.setDate(result.getDate("date"));
+
+                return friendRequest;
+            }
+
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+
+
+        return null;
+
+
+
+    }
+
+    @Override
+    public boolean delete(FriendRequest obj) throws SQLException {
         boolean ok = false;
         try{
             Statement database_instance = conn.createStatement();
@@ -105,15 +135,13 @@ public class FriendRequestDAO implements IFriendRequestDAO{
         List<FriendRequest> list = new ArrayList<>();
         try {
             Statement database_instance = conn.createStatement();
-            String query = "SELECT * FROM friend_request WHERE from_user =" + userId + " OR to_user =" + userId;
+            String query = "SELECT * FROM friend_request WHERE to_user =" + userId;
             ResultSet result = database_instance.executeQuery(query);
-
+            UserDAO userDao = new UserDAO();
             while (result.next()){
                 FriendRequest friendRequest = new FriendRequest();
-                AccountUser from_user = new AccountUser();
-                from_user.setId(result.getInt("from_user"));
-                AccountUser to_user = new AccountUser();
-                to_user.setId(result.getInt("to_user"));
+                AccountUser from_user = userDao.getAccountOfUser(result.getInt("from_user"));
+                AccountUser to_user = userDao.getAccountOfUser(result.getInt("to_user"));
                 friendRequest.setTo_user(to_user);
                 friendRequest.setFrom_user(from_user);
                 friendRequest.setId(result.getInt("id"));
@@ -172,4 +200,6 @@ public class FriendRequestDAO implements IFriendRequestDAO{
 
         return have_request_relation;
     }
+
+
 }
