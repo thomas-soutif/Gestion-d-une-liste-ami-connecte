@@ -4,6 +4,7 @@ import network.Common.Packet;
 import network.Common.Request;
 import network.Common.Response;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
@@ -32,7 +33,7 @@ public class ClientReceive implements Runnable {
                 }
             }
             client.disconnectedServer();
-        } catch (Exception ex) {
+        } catch (IOException | ClassNotFoundException ex) {
             System.out.println(ex.getMessage());
         }
     }
