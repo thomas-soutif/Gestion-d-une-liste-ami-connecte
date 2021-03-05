@@ -26,8 +26,8 @@ public class FriendRelationDAO implements IFriendRelationDAO{
             UserDAO user_dao = new UserDAO();
             while(result.next()){
                 FriendRelation friendRelation = new FriendRelation();
-                AccountUser user1 = user_dao.getAccountOfUser(result.getInt("first_user"));
-                AccountUser user2 = user_dao.getAccountOfUser(result.getInt("second_user"));
+                AccountUser user1 = user_dao.getUserById(result.getInt("first_user"));
+                AccountUser user2 = user_dao.getUserById(result.getInt("second_user"));
                 friendRelation.setId(result.getInt("id"));
                 friendRelation.setFirstUser(user1);
                 friendRelation.setSecondUser(user2);

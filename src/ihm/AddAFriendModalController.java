@@ -25,16 +25,6 @@ public class AddAFriendModalController {
     @FXML
     public void initialize() {
         instance = this;
-        HBox hbox = new HBox();
-        Button button_add = new Button("Ajouter en ami");
-        AccountUser user = new AccountUser();
-        user.setId(45);
-        button_add.getProperties().put("idFriendRequest", user);
-        Label label_name = new Label("Kevin");
-        hbox.getChildren().add(label_name);
-        hbox.getChildren().add(button_add);
-        this.ListExistingUser.getItems().add(hbox);
-
         JSONObject jsonObject = new JSONObject();
         Request request = new Request(TypeRequest.USER_ADD_FRIEND_LIST, jsonObject);
         SocketClient.sendPacketAsyncStatic(request);
@@ -44,7 +34,6 @@ public class AddAFriendModalController {
     public void setFriendAddListOnUI(JSONObject object) {
 
         Platform.runLater(() -> {
-            this.ListExistingUser.getItems().remove(0);
             System.out.println("setFriendAddListOnUI");
             try {
                 JSONArray list_add_friend = object.getJSONArray("list_add_friend_list");

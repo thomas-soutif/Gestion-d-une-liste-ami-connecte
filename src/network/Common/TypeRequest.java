@@ -13,7 +13,9 @@ import database.DAO.FriendRequestDAO;
 import database.DAO.UserDAO;
 import database.EXCEPTION.CustomException;
 import ihm.MainWindowController;
+import network.Server.ConnectedClient;
 import network.Server.Handler.HandlerAuthServer;
+import network.Server.Server;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -186,7 +188,7 @@ public enum TypeRequest {
 
                 //Mise à jour de l'interface de l'ami accepté si il est connecté
 
-                List<ConnectedClient> connectedClient =Server.getClients();
+                List<ConnectedClient> connectedClient = Server.getClients();
 
                 for(ConnectedClient client : connectedClient){
                     if(client.getUser() != null && client.getUser().getId() == userWhoAskedForTheFriendRelation.getId()){

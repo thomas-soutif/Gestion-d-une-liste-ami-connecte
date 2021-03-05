@@ -6,12 +6,15 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -71,6 +74,7 @@ public class MainWindowController {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("AddAFriendModal.fxml"));
         stage.setScene(new Scene(root));
+        stage.getIcons().add(new Image("https://image.noelshack.com/fichiers/2015/19/1431246599-hap512.png"));
         stage.setTitle("Add a friend");
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(
@@ -165,6 +169,7 @@ public class MainWindowController {
                 button_refuse.getProperties().put("idFriendRequest",friend_request_json.getInt("request_id"));
 
                 HBox hBox = new HBox();
+                hBox.setAlignment(Pos.CENTER_LEFT);
                 Label label_name= new Label(friend_request_json.getString("firstname") + " " + ((JSONObject) friend_request).getString("name"));
                 hBox.getChildren().add(label_name);
                 hBox.getChildren().add(button_accept);

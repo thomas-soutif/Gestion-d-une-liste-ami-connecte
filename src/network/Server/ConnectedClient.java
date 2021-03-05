@@ -79,6 +79,7 @@ public class ConnectedClient implements Runnable {
             }
            Server.disconnectedClient(this);
             System.out.println("Deconnexion du client d'id "+ id);
+            server.disconnectedClient(this);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }

@@ -25,8 +25,8 @@ public class FriendRequestDAO implements IFriendRequestDAO{
             UserDAO userDao = new UserDAO();
             while (result.next()){
                 FriendRequest friendRequest = new FriendRequest();
-                AccountUser from_user = userDao.getAccountOfUser(result.getInt("from_user"));
-                AccountUser to_user = userDao.getAccountOfUser(result.getInt("to_user"));
+                AccountUser from_user = userDao.getUserById(result.getInt("from_user"));
+                AccountUser to_user = userDao.getUserById(result.getInt("to_user"));
                 friendRequest.setTo_user(to_user);
                 friendRequest.setFrom_user(from_user);
                 friendRequest.setId(result.getInt("id"));
@@ -140,8 +140,8 @@ public class FriendRequestDAO implements IFriendRequestDAO{
             UserDAO userDao = new UserDAO();
             while (result.next()){
                 FriendRequest friendRequest = new FriendRequest();
-                AccountUser from_user = userDao.getAccountOfUser(result.getInt("from_user"));
-                AccountUser to_user = userDao.getAccountOfUser(result.getInt("to_user"));
+                AccountUser from_user = userDao.getUserById(result.getInt("from_user"));
+                AccountUser to_user = userDao.getUserById(result.getInt("to_user"));
                 friendRequest.setTo_user(to_user);
                 friendRequest.setFrom_user(from_user);
                 friendRequest.setId(result.getInt("id"));

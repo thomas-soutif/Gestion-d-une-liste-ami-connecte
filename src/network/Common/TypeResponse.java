@@ -52,7 +52,6 @@ public enum TypeResponse {
             HandlerAuthClient.handlerUserInscriptionResponse(response);
         }
     },
-    INSCRIPTION,
     FRIEND_REQUEST,
     FRIENDLIST{
 
