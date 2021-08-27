@@ -8,12 +8,16 @@ Vous pouvez retrouver les schemas UML à la racine, qui ont été généré avec
 
 Le résultat de cette structure de code est le fruit d'une réflexion en amont, et d'une pratique axé le plus possible objet afin de permettre la réutilisation de cette base de code pour des gros projets de groupe.
 
+
 **Structure du projet et configurations**
 
 Il y'a 3 packages majeurs : 
 ihm => Contient tout le code front en javaFX
+
 database => Design pattern DAO
+
 network => La gestion des sockets clients et serveurs.
+
 
 Le code IHM utilise le package network.Client afin d'envoyer des reqûetes au serveur mais également faire de l'écoute sur le serveur.
 
@@ -24,6 +28,7 @@ Pour configurer l'adresse IP du serveur éditez le fichier network/Common/networ
 Pour configurer l'adresse et le mot de passe de votre base de données, éditez le fichier database/ConnexionPostGreSQL.java
 
 
+
 **Access à la base de données**
 
 Si vous êtes curieux de voir à quoi ressemble la base de données, voiçi les identifiants (lecture seulement) :
@@ -31,6 +36,8 @@ Si vous êtes curieux de voir à quoi ressemble la base de données, voiçi les 
 Lien : https://phppgadmin.alwaysdata.com/
 Identifiant : xelar_project-list-ami
 Password : 2fmjWLrf@YjVKBt
+
+
 
 **Gestion des erreurs personnalisés**
 
