@@ -8,7 +8,7 @@ Vous pouvez retrouver les schemas UML à la racine, qui a été généré avec l
 
 Le résultat de cette structure de code est le fruit d'une réflexion en amont, et d'une pratique axé le plus possible objet afin de permettre la réutilisation de cette base de code pour des gros projets de groupe.
 
-**Structure du projet et configurations **
+**Structure du projet et configurations**
 
 Il y'a 3 packages majeurs : 
 ihm => Contient tout le code front en javaFX
