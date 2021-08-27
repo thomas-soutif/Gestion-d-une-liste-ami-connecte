@@ -8,6 +8,20 @@ Vous pouvez retrouver les schemas UML à la racine, qui a été généré avec l
 
 Le résultat de cette structure de code est le fruit d'une réflexion en amont, et d'une pratique axé le plus possible objet afin de permettre la réutilisation de cette base de code pour des gros projets de groupe.
 
+**Structure du projet et configurations **
+
+Il y'a 3 packages majeurs : 
+ihm => Contient tout le code front en javaFX
+database => Design pattern DAO
+network => La gestion des sockets clients et serveurs.
+
+Le code IHM utilise le package network.Client afin d'envoyer des reqûetes au serveur mais également faire de l'écoute sur le serveur.
+
+Le serveur utilise le package network.Server et fait de l'écoute, et peut également envoyer des reqûetes au client.
+
+Pour configurer l'adresse IP du serveur éditez le fichier network/Common/network.properties
+
+Pour configurer l'adresse et le mot de passe de votre base de données, éditez le fichier database/ConnexionPostGreSQL.java
 
 **Gestion des erreurs personnalisés**
 
