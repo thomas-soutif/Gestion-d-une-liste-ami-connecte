@@ -1,9 +1,12 @@
-Pour accèder à la base de données Postgre depuis le navigateur :
+Ce projet a été fait en collaboration avec : Aubin GARNIER, Jean-Michel DOSSOU et Fabien SAUL
 
-https://phppgadmin.alwaysdata.com/
+C'est une application Java client / serveur qui permet de gérer une liste d'amis à la manière un peu des logiciels de gestions de jeux comme Steam.
 
-Identifiant : xelar_project-list-ami
-Password : 2fmjWLrf@YjVKBt
+Le focus principal a été fait sur la conception d'un code réutilisable pour gérer des requetes sur le réseau entre le client et le serveur et faire une synchronisation.
+
+Vous pouvez retrouver les schemas UML à la racine, qui a été généré avec le logiciel StarUML. Nous avons 
+
+Le résultat de cette structure de code est le fruit d'une réflexion en amont, et d'une pratique axé le plus possible objet afin de permettre la réutilisation de cette base de code pour des gros projets de groupe.
 
 
 **Gestion des erreurs personnalisés**
