@@ -23,6 +23,15 @@ Pour configurer l'adresse IP du serveur éditez le fichier network/Common/networ
 
 Pour configurer l'adresse et le mot de passe de votre base de données, éditez le fichier database/ConnexionPostGreSQL.java
 
+
+**Access à la base de données**
+
+Si vous êtes curieux de voir à quoi ressemble la base de données, voiçi les identifiants (lecture seulement) :
+
+Lien : https://phppgadmin.alwaysdata.com/
+Identifiant : xelar_project-list-ami
+Password : 2fmjWLrf@YjVKBt
+
 **Gestion des erreurs personnalisés**
 
 Dans le package database.EXCEPTIONS se trouve les classes personnalisés qui héritent de Exception. Pour ajouter un type d'erreur à gérer, il faut ajouter l'enum dans ErrorType. Les autres fichiers n'ont pas besoin d'être modifier. Voici un example de bonne utilisation de cette gestion d'erreur dans le code :
