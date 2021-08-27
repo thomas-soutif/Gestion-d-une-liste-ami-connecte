@@ -13,9 +13,9 @@ public class ConnexionPostGreSQL
 
     protected ConnexionPostGreSQL() // Constructeur
     {
-        connect_url = "jdbc:postgresql://postgresql-xelar.alwaysdata.net:5432/xelar_friends_list";
-        login = "xelar_project-list-ami";
-        password = "2fmjWLrf@YjVKBt";
+        connect_url = "jdbc:postgresql://[Mettre votre adresse ici]:[port]/[nom de la base de donnée]";
+        login = "";
+        password = "";
         try
         {
             System.out.println("Connexion à " + connect_url );
