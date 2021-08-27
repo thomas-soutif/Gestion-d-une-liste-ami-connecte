@@ -2,9 +2,9 @@ Ce projet a été fait en collaboration avec : Aubin GARNIER, Jean-Michel DOSSOU
 
 C'est une application Java client / serveur qui permet de gérer une liste d'amis à la manière un peu des logiciels de gestions de jeux comme Steam.
 
-Le focus principal a été fait sur la conception d'un code réutilisable pour gérer des requetes sur le réseau entre le client et le serveur et faire une synchronisation.
+Le focus principal a été fait sur la conception d'un code réutilisable pour gérer des requetes sur le réseau entre le client et le serveur et faire de la synchronisation entre les deux (via de l'écoute de chacun).
 
-Vous pouvez retrouver les schemas UML à la racine, qui a été généré avec le logiciel StarUML.
+Vous pouvez retrouver les schemas UML à la racine, qui ont été généré avec le logiciel StarUML.
 
 Le résultat de cette structure de code est le fruit d'une réflexion en amont, et d'une pratique axé le plus possible objet afin de permettre la réutilisation de cette base de code pour des gros projets de groupe.
 
