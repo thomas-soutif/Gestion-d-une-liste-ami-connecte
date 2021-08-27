@@ -4,7 +4,7 @@ C'est une application Java client / serveur qui permet de gérer une liste d'ami
 
 Le focus principal a été fait sur la conception d'un code réutilisable pour gérer des requetes sur le réseau entre le client et le serveur et faire une synchronisation.
 
-Vous pouvez retrouver les schemas UML à la racine, qui a été généré avec le logiciel StarUML. Nous avons 
+Vous pouvez retrouver les schemas UML à la racine, qui a été généré avec le logiciel StarUML.
 
 Le résultat de cette structure de code est le fruit d'une réflexion en amont, et d'une pratique axé le plus possible objet afin de permettre la réutilisation de cette base de code pour des gros projets de groupe.
 
